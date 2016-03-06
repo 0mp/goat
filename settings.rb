@@ -1,0 +1,1 @@
+ALIAS_TO_PATH_HASH_FILE_PATH = "database.db"
