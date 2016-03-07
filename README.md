@@ -14,6 +14,7 @@ Installation
     git clone https://github.com/0mp/goat
     cd goat
     sh install.sh
+    source ~/.bashrc
     
 *Note: The installation script assumes that you are using Bash and you keep your aliases in `~/.bashrc`. If it is not true then you'll need to modify `install.sh` a little bit.*
 
