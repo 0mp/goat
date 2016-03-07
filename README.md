@@ -14,17 +14,19 @@ Installation
     git clone https://github.com/0mp/goat
     cd goat
     sh install.sh
+    
+*Note: The installation script assumes that you are using Bash and you keep your aliases in `~/.bashrc`. If it is not true then you'll need to modify `install.sh` a little bit.*
 
 Usage
 -----
 
 - Assign an alias to a path
 
-    $ goat awesome_alias bring_path
+        $ goat awesome_alias bring_path
 
 - Go to a directory with an awesome alias
 
-    $ goat awesome_alias
+        $ goat awesome_alias
 
 Configuration
 -------------
