@@ -6,7 +6,7 @@ About
 
 `goat` is a hacky shortcut utility for managing your shortcuts.
 
-You can assign awesome aliases to the boring paths of yours using `goat`.
+You can assign some awesome aliases to those boring paths of yours using `goat`.
 
 Installation
 ------------
