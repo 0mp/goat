@@ -21,7 +21,7 @@ echo "Adding alias to ${SHELLRC_FILE} ..."
 echo '
 # Added by goat.
 function GoatThere {
-    cd `ruby'" ${INSTALLATION_DIR}"'/goat.rb $1 $2 2>/dev/stderr`
+    cd `ruby'" ${INSTALLATION_DIR}"'/goat.rb $1 $2 || pwd`
 }
 alias goat=GoatThere' >> $SHELLRC_FILE
 
