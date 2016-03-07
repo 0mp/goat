@@ -31,6 +31,11 @@ Configuration
 
 Paths and aliases are saved in `~/.goat/database.yml`.
 
+Dependencies
+------------
+
+You'll need Ruby.
+
 License
 -------
 
