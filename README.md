@@ -20,7 +20,7 @@ Usage
 
 - Assign an alias to a path
 
-        $ goat awesome_alias bring_path
+        $ goat awesome_alias boring_path
 
 - Go to a directory with an awesome alias
 
