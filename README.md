@@ -1,10 +1,22 @@
-## About
+goat
+====
 
-goat is a hacky shortcut utility.
+About
+=====
 
-You can assign awesome aliases to the boring paths of yours using goat.
+`goat` is a hacky shortcut utility for managing your shortcuts.
 
-## Usage
+You can assign awesome aliases to the boring paths of yours using `goat`.
+
+Installation
+============
+
+    git clone https://github.com/0mp/goat
+    cd goat
+    sh install.sh
+
+Usage
+=====
 
 - Assign an alias to a path
 
@@ -14,13 +26,12 @@ You can assign awesome aliases to the boring paths of yours using goat.
 
     $ goat awesome_alias
 
-## Installation
-
-    git clone https://github.com/0mp/goat
-    cd goat
-    sh install.sh
-
-## Configuration
+Configuration
+=============
 
 Paths and aliases are saved in `~/.goat/database.yml`.
 
+License
+-------
+
+Licensed under MIT license. Copyright (c) 2016 Mateusz Piotrowski
