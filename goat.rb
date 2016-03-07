@@ -3,7 +3,7 @@
 require 'yaml'
 
 module Goat
-    FILE_PATH = ENV['HOME'] + "/.goat/database.yml"
+    FILE_PATH = ENV['HOME'] + "/.goat/config/shortcuts.yml"
     @@path_from_alias = {}
 
     module_function
