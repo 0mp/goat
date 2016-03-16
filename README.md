@@ -13,28 +13,35 @@ Installation
     sh install.sh
     source ~/.bashrc
 
-*Note: The installation script assumes that you are using Bash and you keep your aliases in `~/.bashrc`. If it is not true then you'll need to modify `install.sh` a little bit.*
-
 Usage
 -----
 
-- Assign an alias to a path
+- Create a <shortcut> to <directory>.
 
-        $ goat awesome_alias boring_path
+        goat <shortcut> <directory>
 
-- Go to a directory with an awesome alias
+- Change to a directory assigned to <shortcut>.
 
-        $ goat awesome_alias
+        goat <shortcut>
+
+- List all your saved shortcuts.
+
+        goat please list shortcuts
+
+- Delete <shortcut> from your saved shortcuts.
+
+        goat please delete <shortcut>
+
+- Print help message.
+
+        goat
+
+        goat please help me
 
 Configuration
 -------------
 
-Paths and aliases are saved in `~/.goat/config/shortcuts.yml`.
-
-Dependencies
-------------
-
-You'll need Ruby.
+Paths and aliases are saved in `~/.goat/shortcuts.goat`.
 
 License
 -------
