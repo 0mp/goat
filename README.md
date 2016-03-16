@@ -16,11 +16,11 @@ Installation
 Usage
 -----
 
-- Create a <shortcut> to <directory>.
+- Create a \<shortcut> to \<directory>.
 
         goat <shortcut> <directory>
 
-- Change to a directory assigned to <shortcut>.
+- Change to a directory assigned to \<shortcut>.
 
         goat <shortcut>
 
@@ -28,7 +28,7 @@ Usage
 
         goat please list shortcuts
 
-- Delete <shortcut> from your saved shortcuts.
+- Delete \<shortcut> from your saved shortcuts.
 
         goat please delete <shortcut>
 
