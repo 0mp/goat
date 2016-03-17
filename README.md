@@ -33,10 +33,12 @@ Usage
         goat please delete <shortcut>
 
 - Print the help message.
-
-        goat
-
-        goat please help me
+    ```
+    goat
+    ```
+    ```
+    goat please help me
+    ```
 
 Configuration
 -------------
