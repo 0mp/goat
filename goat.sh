@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 SHORTCUTS_FILE="$HOME/.goat/shortcuts.goat"
-TAB_CHAR=$(echo -e -n "\t")
 
 # Stderr echo wrapper
 errcho(){
@@ -20,7 +19,7 @@ errcho(){
 get_entry() {
     local status=0
     local shortcut="$1"
-    local searched_entry="^$shortcut$TAB_CHAR"
+    local searched_entry="^$shortcut	"
     local grep_result=$(grep -n "$searched_entry" "$SHORTCUTS_FILE" 2>/dev/null)
 
     # Check if there is only one result found by grep
@@ -41,7 +40,7 @@ get_entry() {
 #   $1 -> a shortcut for which we want to remove a matching entry
 remove_shortcut() {
     local shortcut="$1"
-    local removed_entry="$shortcut$TAB_CHAR"
+    local removed_entry="$shortcut	"
     local line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
     if [ ! -z "$line" ]; then
         sed -e "${line},${line}d" -i '' "$SHORTCUTS_FILE"
@@ -86,7 +85,7 @@ go() {
     # Check if get_entry failed
     [ "$entry" = "1" ] && return 1
 
-    local path="$(echo "$entry" | cut -d"${TAB_CHAR}" -f2)"
+    local path="$(echo "$entry" | cut -d'	' -f2)"
 
     if [ -z "$path" ]; then
         errcho "ERROR: goat doesn't know where '${shortcut}' should lead to."
@@ -120,7 +119,7 @@ create() {
     remove_shortcut "$shortcut"
 
     # Add new shortcut
-    echo "$shortcut$TAB_CHAR$path" >> "$SHORTCUTS_FILE"
+    echo "$shortcut	$path" >> "$SHORTCUTS_FILE"
 
     return 0
 }
