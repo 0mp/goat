@@ -20,10 +20,10 @@ get_entry() {
     local status=0
     local shortcut="$1"
     local searched_entry="^$shortcut	"
-    local grep_result=$(grep -n "$searched_entry" "$SHORTCUTS_FILE" 2>/dev/null)
+    grep_result=$(grep -n "$searched_entry" "$SHORTCUTS_FILE" 2>/dev/null)
 
     # Check if there is only one result found by grep
-    local number_of_lines=$(echo "$grep_result" | wc -l)
+    number_of_lines=$(echo "$grep_result" | wc -l)
     if [ "$number_of_lines" -gt 1 ]; then
         errcho "ERROR: goat found more than one destinations for the '$shortcut' shortcut. The '$SHORTCUTS_FILE' file is corrupted."
         echo "1"
@@ -41,7 +41,7 @@ get_entry() {
 remove_shortcut() {
     local shortcut="$1"
     local removed_entry="$shortcut	"
-    local line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
+    line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
     if [ ! -z "$line" ]; then
         sed -e "${line},${line}d" -i '' "$SHORTCUTS_FILE"
     fi
@@ -80,12 +80,12 @@ Usage:
 #   - 1 when there was an error
 go() {
     local shortcut="$1"
-    local entry="$(get_entry "$shortcut")"
+    entry="$(get_entry "$shortcut")"
 
     # Check if get_entry failed
     [ "$entry" = "1" ] && return 1
 
-    local path="$(echo "$entry" | cut -d'	' -f2)"
+    path="$(echo "$entry" | cut -d'	' -f2)"
 
     if [ -z "$path" ]; then
         errcho "ERROR: goat doesn't know where '${shortcut}' should lead to."
@@ -113,7 +113,7 @@ create() {
     fi
 
     # Get the absolute path
-    local path=$(cd -- "$path" && pwd -P 2>/dev/null | pwd)
+    path=$(cd -- "$path" && pwd -P 2>/dev/null | pwd)
 
     # Remove the old shortcut
     remove_shortcut "$shortcut"
