@@ -47,6 +47,26 @@ install_goat() {
     create_goatagent
 }
 
+uninstall_goat() {
+    printf "Are you sure you want to uninstall goat? [y|n] "
+    read REPLY
+    case $REPLY in
+        y|Y)
+            echo Uninstalling goat ...
+            if rm -rf "$INSTALLATION_DIR"; then
+                echo "Remove the goat alias from you .*rc file to finish."
+            else
+                echo "There was an error with the removal of $INSTALLATION_DIR"
+                exit 1
+            fi
+            ;;
+        *)
+            echo Sure! No uninstalling for the time being.
+            ;;
+    esac
+}
+
+
 update_goat() {
     # Check the .goat existance.
     echo Check if goat is already installed.
@@ -66,6 +86,9 @@ update_goat() {
 case "$ACTIVITY" in
     "install")
         install_goat
+        ;;
+    "uninstall")
+        uninstall_goat
         ;;
     "update")
         update_goat
