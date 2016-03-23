@@ -10,7 +10,7 @@ Installation
 
     git clone https://github.com/0mp/goat
     cd goat
-    sh install.sh
+    ./goat-keeper install
     source ~/.bashrc
 
 Usage
@@ -48,6 +48,11 @@ Configuration
 -------------
 
 Paths and aliases are saved in `~/.goat/shortcuts.goat`.
+
+Updating
+--------
+
+    ./goat-keeper update
 
 License
 -------
