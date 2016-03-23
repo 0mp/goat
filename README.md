@@ -16,27 +16,27 @@ Installation
 Usage
 -----
 
-- Create a \<shortcut> to a \<directory>.
+- Create a \<shortcut> to a \<directory>
 
         goat <shortcut> <directory>
 
-- Change to a directory assigned to a \<shortcut>.
+- Change to a directory assigned to a \<shortcut>
 
         goat <shortcut>
 
-- List all your saved shortcuts.
+- List all your saved shortcuts
 
         goat please list shortcuts
 
-- Delete a \<shortcut> from your saved shortcuts.
+- Delete a \<shortcut> from your saved shortcuts
 
         goat please delete <shortcut>
 
-- Delete all saved shortcuts.
+- Delete all saved shortcuts
 
         goat please nuke shortcuts
 
-- Print the help message.
+- Print the help message
     ```
     goat
     ```
@@ -49,10 +49,13 @@ Configuration
 
 Paths and aliases are saved in `~/.goat/shortcuts.goat`.
 
-Updating
---------
+- Update goat
 
-    ./goat-keeper update
+        ./goat-keeper update
+
+- Uninstall goat
+
+        ./goat-keeper uninstall
 
 License
 -------
