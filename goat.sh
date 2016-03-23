@@ -62,6 +62,9 @@ Usage:
     goat please list shortcuts
             List all your saved shortcuts.
 
+    goat please nuke shortcuts
+            Delete all saved shortcuts.
+
     goat please delete <shortcut>
             Delete <shortcut> from your saved shortcuts.
 
@@ -140,19 +143,21 @@ configure() {
     local exit_status=0
 
     if [ "$1" = "please" ]; then
-        if [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
-            cat "$SHORTCUTS_FILE" || local exit_status=1
-        elif [ "$2" = "delete" ]; then
-            remove_shortcut "$3" || local exit_status=1
+        if [ "$2" = "delete" ]; then
+            remove_shortcut "$3" || exit_status=1
         elif [ "$2" = "help" ] && [ "$3" = "me" ]; then
             show_help
+        elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
+            cat "$SHORTCUTS_FILE" || exit_status=1
+        elif [ "$2" = "nuke" ] && [ "$3" = "shortcuts" ]; then
+            rm "$SHORTCUTS_FILE" || exit_status=1
         else
             echo "ERROR: goat just doesn't know what to do with itself."
-            local exit_status=1
+            exit_status=1
         fi
     else
         echo "FAUX PAS: goat doesn't like that kind of tone."
-        local exit_status=1
+        exit_status=1
     fi
     return $exit_status
 }
@@ -167,13 +172,13 @@ handle_input() {
     [ ! -f "$SHORTCUTS_FILE" ] && touch "$SHORTCUTS_FILE"
 
     if [ $# -eq 0 ]; then
-        show_help || local exit_status=1
+        show_help || exit_status=1
     elif [ $# -eq 1 ]; then
-        go "$1" || local exit_status=1
+        go "$1" || exit_status=1
     elif [ $# -eq 2 ]; then
-        create "$1" "$2" || local exit_status=1
+        create "$1" "$2" || exit_status=1
     elif [ $# -eq 3 ]; then
-        configure "$1" "$2" "$3" || local exit_status=1
+        configure "$1" "$2" "$3" || exit_status=1
     fi
 
     exit $exit_status

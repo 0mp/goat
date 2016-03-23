@@ -32,6 +32,10 @@ Usage
 
         goat please delete <shortcut>
 
+- Delete all saved shortcuts.
+
+        goat please nuke shortcuts
+
 - Print the help message.
     ```
     goat
