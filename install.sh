@@ -25,7 +25,8 @@ alias goat=". '"$INSTALLATION_DIR"'/goat-agent.sh"' >> "$SHELLRC_FILE"
 touch "$INSTALLATION_DIR"/goat-agent.sh
 echo '# goat-agent
 goat_there() {
-    local output="$(sh '"$GOAT"' "$@")"
+    local output
+    output="$(sh '"$GOAT"' "$@")"
     if [ -d "$output" ]; then
         cd $output
     elif [ ! -z "$output" ]; then

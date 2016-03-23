@@ -20,6 +20,7 @@ get_entry() {
     local status=0
     local shortcut="$1"
     local searched_entry="^$shortcut	"
+    local grep_result
     grep_result=$(grep -n "$searched_entry" "$SHORTCUTS_FILE" 2>/dev/null)
 
     # Check if there is only one result found by grep
@@ -41,6 +42,7 @@ get_entry() {
 remove_shortcut() {
     local shortcut="$1"
     local removed_entry="$shortcut	"
+    local line
     line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
     if [ ! -z "$line" ]; then
         sed -e "${line},${line}d" -i '' "$SHORTCUTS_FILE"
@@ -80,11 +82,13 @@ Usage:
 #   - 1 when there was an error
 go() {
     local shortcut="$1"
+    local entry
     entry="$(get_entry "$shortcut")"
 
     # Check if get_entry failed
     [ "$entry" = "1" ] && return 1
 
+    local path
     path="$(echo "$entry" | cut -d'	' -f2)"
 
     if [ -z "$path" ]; then
@@ -104,7 +108,8 @@ go() {
 #   - 0 if everything was fine
 create() {
     local shortcut="$1"
-    local path="$2"
+    local path
+    path="$2"
 
     # Check if the path exists
     if [ $(cd "$path" 1>/dev/null 2>/dev/null && echo 0 || echo 1) -eq 1 ]; then
