@@ -20,7 +20,7 @@ Usage
 
         goat <shortcut> <directory>
 
-- Change to a directory assigned to a \<shortcut>
+- Change directory to a directory assigned to a \<shortcut>
 
         goat <shortcut>
 
