@@ -17,8 +17,8 @@ install_cd_extended_with_goat() {
             echo Adding cd extended with goat ...
             echo "\
 cd_extended_wth_goat() {
-    [ command cd \"\$1\" 2>/dev/null ] && return 0
-    . $INSTALLATION_DIR/goat-agent.sh \"\$1\"
+    [ \"\$1\" = \"\" ] && command cd
+    command cd \"\$1\" 2>/dev/null || . $INSTALLATION_DIR/goat-agent.sh \"\$1\"
 }
 
 alias cd=\"cd_extended_wth_goat\"
@@ -37,7 +37,7 @@ create_goatagent() {
         local output
         output="$(sh '"$GOAT"' "$@")"
         if [ -d "$output" ]; then
-            command cd $output
+            command cd "$output"
         elif [ ! -z "$output" ]; then
             echo "$output"
         fi
