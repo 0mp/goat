@@ -5,6 +5,15 @@ goat
 
 You can assign some awesome aliases to those boring paths of yours using `goat`.
 
+`goat` can run after every failed `cd`. It means if you typed `cd dev` and there is no `./dev/` directory, `goat` will treat `dev` as a shortcut and try to go to the coresponding directory.
+
+    # Example of the cd extended with goat usage
+    [ ~/Pictures/ ] $ goat dev ~/Documents/dev # Create a shortcut to dev
+    [ ~/Pictures/ ] $ ls # There is no ~/Pictures/dev directory
+    seahores wallpapers
+    [ ~/Pictures/ ] $ cd dev # cd fails so goat tries to take us to dev if known
+    [ ~/Documents/dev ] $
+
 Installation
 ------------
 

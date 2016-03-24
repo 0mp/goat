@@ -10,6 +10,26 @@ copy_goatsh() {
     cp goat.sh $INSTALLATION_DIR
 }
 
+install_cd_extended_with_goat() {
+    read -p "goat can try change directory if cd fails to do so. Would you like to add this feature? [Y|n] " REPLY
+    case "$REPLY" in
+        y|Y|'')
+            echo Adding cd extended with goat ...
+            echo "\
+cd_extended_wth_goat() {
+    [ command cd \"\$1\" 2>/dev/null ] && return 0
+    . $INSTALLATION_DIR/goat-agent.sh \"\$1\"
+}
+
+alias cd=\"cd_extended_wth_goat\"
+" >> "$SHELLRC_FILE"
+            ;;
+        *)
+            echo "Sure! This feature will not be installed."
+            ;;
+    esac
+}
+
 create_goatagent() {
     touch "$INSTALLATION_DIR"/goat-agent.sh
     echo '# goat-agent
@@ -25,6 +45,18 @@ create_goatagent() {
     goat_there "$@"' > "$GOATAGENT_FILE"
 }
 
+add_goat_alias() {
+    read -p "What is the .*rc file where the goat alias should be appened? [default: ${HOME}/.bashrc] " SHELLRC_FILE
+
+    [ ! "$SHELLRC_FILE" ] && SHELLRC_FILE="$HOME/.bashrc"
+    echo "Adding alias to ${SHELLRC_FILE} ..."
+
+    echo '
+# Added by goat (https://github.com/0mp/goat)
+alias goat=". '"$INSTALLATION_DIR"'/goat-agent.sh"
+' >> "$SHELLRC_FILE"
+}
+
 install_goat() {
     # Create a directory
     echo "Installing goat to ${INSTALLATION_DIR} ..."
@@ -34,23 +66,19 @@ install_goat() {
     copy_goatsh
 
     # Add goat alias to .*rc
-    read -p "What is the .*rc file where the goat alias should be appened? [default: ${HOME}/.bashrc] " SHELLRC_FILE
+    add_goat_alias
 
-    [ ! "$SHELLRC_FILE" ] && SHELLRC_FILE="$HOME/.bashrc"
-    echo "Adding alias to ${SHELLRC_FILE} ..."
-
-    echo '
-    # Added by goat (https://github.com/0mp/goat)
-    alias goat=". '"$INSTALLATION_DIR"'/goat-agent.sh"' >> "$SHELLRC_FILE"
-
-    # Creating goat-agent
+    # Create goat-agent
     create_goatagent
+
+    # Add the possiblity to run goat after every failed cd
+    install_cd_extended_with_goat
 }
 
 uninstall_goat() {
-    printf "Are you sure you want to uninstall goat? [y|n] "
+    printf "Are you sure you want to uninstall goat? [y|N] "
     read REPLY
-    case $REPLY in
+    case "$REPLY" in
         y|Y)
             echo Uninstalling goat ...
             if rm -rf "$INSTALLATION_DIR"; then
