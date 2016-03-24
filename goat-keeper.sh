@@ -17,7 +17,7 @@ create_goatagent() {
         local output
         output="$(sh '"$GOAT"' "$@")"
         if [ -d "$output" ]; then
-            cd $output
+            command cd $output
         elif [ ! -z "$output" ]; then
             echo "$output"
         fi
