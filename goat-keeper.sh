@@ -7,7 +7,7 @@ KEEPER_NAME="goat-keeper"
 ACTIVITY="$1"
 
 copy_goatsh() {
-    cp goat.sh $INSTALLATION_DIR
+    cp goat.sh "$INSTALLATION_DIR"
 }
 
 install_cd_extended_with_goat() {
@@ -32,17 +32,19 @@ alias cd=\"cd_extended_wth_goat\"
 
 create_goatagent() {
     touch "$INSTALLATION_DIR"/goat-agent.sh
-    echo '# goat-agent
-    goat_there() {
-        local output
-        output="$(sh '"$GOAT"' "$@")"
-        if [ -d "$output" ]; then
-            command cd "$output"
-        elif [ ! -z "$output" ]; then
-            echo "$output"
-        fi
-    }
-    goat_there "$@"' > "$GOATAGENT_FILE"
+    echo '\
+# goat-agent
+goat_there() {
+    local output
+    output="$(sh '"$GOAT"' "$@")"
+    if [ -d "$output" ]; then
+        command cd "$output"
+    elif [ ! -z "$output" ]; then
+        echo "$output"
+    fi
+}
+goat_there "$@"
+' > "$GOATAGENT_FILE"
 }
 
 add_goat_alias() {
