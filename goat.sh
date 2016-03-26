@@ -34,6 +34,7 @@ get_entry() {
     else
         echo "$grep_result"
     fi
+
 }
 
 # Remove a certain entry from a file. If there is no such entry do nothing
@@ -96,6 +97,9 @@ go() {
 
     if [ -z "$path" ]; then
         errcho "ERROR: goat doesn't know where '${shortcut}' should lead to."
+        return 1
+    elif [ ! -d "$path" ]; then
+        errcho "ERROR: goat cannot reach the '${path}' directory."
         return 1
     else
         echo "$path"
