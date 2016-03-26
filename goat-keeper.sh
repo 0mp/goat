@@ -11,18 +11,22 @@ copy_goatsh() {
 }
 
 install_cd_extended_with_goat() {
-    read -p "goat can try change directory if cd fails to do so. Would you like to add this feature? [Y|n] " REPLY
+    printf '%s %s ' \
+        "goat can try change directory if cd fails to do so." \
+        "Would you like to add this feature? [Y|n] "
+    read REPLY
     case "$REPLY" in
         y|Y|'')
             echo Adding cd extended with goat ...
-            echo "\
-cd_extended_wth_goat() {
-    [ \"\$1\" = \"\" ] && command cd
-    command cd \"\$1\" 2>/dev/null || . $INSTALLATION_DIR/goat-agent.sh \"\$1\"
-}
-
-alias cd=\"cd_extended_wth_goat\"
-" >> "$SHELLRC_FILE"
+            echo \
+                "\n""cd_extended_wth_goat() {"                          \
+                "\n""    [ \"\$1\" = \"\" ] && command cd"              \
+                "\n""    command cd \"\$1\" 2>/dev/null || "            \
+                            ". $INSTALLATION_DIR/goat-agent.sh \"\$1\"" \
+                "\n""}"                                                 \
+                "\n"                                                    \
+                "\n""alias cd=\"cd_extended_wth_goat\"                  \
+                " >> "$SHELLRC_FILE"
             ;;
         *)
             echo "Sure! This feature will not be installed."
@@ -32,31 +36,35 @@ alias cd=\"cd_extended_wth_goat\"
 
 create_goatagent() {
     touch "$INSTALLATION_DIR"/goat-agent.sh
-    echo '\
-# goat-agent
-goat_there() {
-    local output
-    output="$(sh '"$GOAT"' "$@")"
-    if [ -d "$output" ]; then
-        command cd "$output"
-    elif [ ! -z "$output" ]; then
-        echo "$output"
-    fi
-}
-goat_there "$@"
-' > "$GOATAGENT_FILE"
+    echo    "# goat-agent"                              \
+        "\n""goat_there() {"                            \
+        "\n""    local output"                          \
+        "\n""    output=\"\$(sh \"\$GOAT\" \"\$@\")\""  \
+        "\n""    if [ -d \"\$output\" ]; then"          \
+        "\n""        command cd \"\$output\""           \
+        "\n""    elif [ ! -z \"\$output\" ]; then"      \
+        "\n""        echo \"\$output\""                 \
+        "\n""    fi"                                    \
+        "\n""}"                                         \
+        "\n""goat_there \"\$@\""                        \
+        "\n"                                            \
+        > "$GOATAGENT_FILE"
 }
 
 add_goat_alias() {
-    read -p "What is the .*rc file where the goat alias should be appened? [default: ${HOME}/.bashrc] " SHELLRC_FILE
+    printf '%s %s ' \
+        "What is the .*rc file where the goat alias should be appened?" \
+        "[default: ${HOME}/.bashrc]"
+    read SHELLRC_FILE
 
     [ ! "$SHELLRC_FILE" ] && SHELLRC_FILE="$HOME/.bashrc"
     echo "Adding alias to ${SHELLRC_FILE} ..."
 
-    echo '
-# Added by goat (https://github.com/0mp/goat)
-alias goat=". '"$INSTALLATION_DIR"'/goat-agent.sh"
-' >> "$SHELLRC_FILE"
+    echo \
+        "\n""# Added by goat (https://github.com/0mp/goat)"             \
+        "\n""alias goat=\". '\"\$INSTALLATION_DIR\"'/goat-agent.sh\""   \
+        "\n"                                                            \
+        >> "$SHELLRC_FILE"
 }
 
 install_goat() {
@@ -124,8 +132,9 @@ case "$ACTIVITY" in
         update_goat
         ;;
     *)
-        echo "\
-Keeper is a little bit confused about your request. What's that again?
-Usage: ./$KEEPER_NAME [install|update]"
+        echo    "Keeper is a little bit confused about your request. "  \
+                    "What's that again?"                                \
+            "\n"'Usage: ./$KEEPER_NAME [install|update]'
+        ;;
 esac && echo Done!
 
