@@ -1,8 +1,8 @@
 #!/bin/sh
 
-INSTALLATION_DIR="$HOME/.goat"
-GOATAGENT_FILE="$INSTALLATION_DIR/goat-agent.sh"
-GOAT="$INSTALLATION_DIR/goat.sh"
+INSTALLATION_DIR="${HOME}/.goat"
+GOATAGENT_FILE="${INSTALLATION_DIR}/goat-agent.sh"
+GOAT="${INSTALLATION_DIR}/goat.sh"
 KEEPER_NAME="goat-keeper"
 ACTIVITY="$1"
 
@@ -36,18 +36,18 @@ install_cd_extended_with_goat() {
 
 create_goatagent() {
     touch "$INSTALLATION_DIR"/goat-agent.sh
-    echo    "# goat-agent"                              \
-        "\n""goat_there() {"                            \
-        "\n""    local output"                          \
-        "\n""    output=\"\$(sh \"\$GOAT\" \"\$@\")\""  \
-        "\n""    if [ -d \"\$output\" ]; then"          \
-        "\n""        command cd \"\$output\""           \
-        "\n""    elif [ ! -z \"\$output\" ]; then"      \
-        "\n""        echo \"\$output\""                 \
-        "\n""    fi"                                    \
-        "\n""}"                                         \
-        "\n""goat_there \"\$@\""                        \
-        "\n"                                            \
+    echo    "# goat-agent"                          \
+        "\n""goat_there() {"                        \
+        "\n""    local output"                      \
+        "\n""    output=\"\$(sh "$GOAT" \"\$@\")\"" \
+        "\n""    if [ -d \"\$output\" ]; then"      \
+        "\n""        command cd \"\$output\""       \
+        "\n""    elif [ ! -z \"\$output\" ]; then"  \
+        "\n""        echo \"\$output\""             \
+        "\n""    fi"                                \
+        "\n""}"                                     \
+        "\n""goat_there \"\$@\""                    \
+        "\n"                                        \
         > "$GOATAGENT_FILE"
 }
 
@@ -61,9 +61,8 @@ add_goat_alias() {
     echo "Adding alias to ${SHELLRC_FILE} ..."
 
     echo \
-        "\n""# Added by goat (https://github.com/0mp/goat)"             \
-        "\n""alias goat=\". '\"\$INSTALLATION_DIR\"'/goat-agent.sh\""   \
-        "\n"                                                            \
+        "\n""# Added by goat (https://github.com/0mp/goat)"      \
+        "\n""alias goat=\". ${INSTALLATION_DIR}/goat-agent.sh\"" \
         >> "$SHELLRC_FILE"
 }
 
@@ -132,9 +131,9 @@ case "$ACTIVITY" in
         update_goat
         ;;
     *)
-        echo    "Keeper is a little bit confused about your request. "  \
-                    "What's that again?"                                \
-            "\n"'Usage: ./$KEEPER_NAME [install|update]'
+        echo    "Keeper is a little bit confused about your request. " \
+                    "What's that again?"                               \
+            "\n""Usage: ./${KEEPER_NAME} [install|update]"
         ;;
 esac && echo Done!
 
