@@ -46,7 +46,7 @@ remove_shortcut() {
     local line
     line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
     if [ ! -z "$line" ]; then
-        sed -i '' -e "${line}d" "$SHORTCUTS_FILE"
+        sed -e "${line}d" "$SHORTCUTS_FILE" > "$SHORTCUTS_FILE".bak && mv "$SHORTCUTS_FILE".bak "$SHORTCUTS_FILE"
     fi
 }
 
