@@ -136,17 +136,17 @@ case "$ACTIVITY" in
     "install")
         install_goat
         ;;
-    "remove")
-        remove_goat
-        ;;
     "update")
         update_goat
+        ;;
+    "remove")
+        remove_goat
         ;;
     *)
         printf "%s%s\n%s\n" \
             "Keeper is a little bit confused about your request. " \
             "What's that again?"                                   \
-            "Usage: ./${KEEPER_NAME} [install|update]"
+            "Usage: ./${KEEPER_NAME} [install|update|remove]"
         exit 1
         ;;
 esac && echo Done!
