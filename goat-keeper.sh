@@ -17,6 +17,10 @@ install_cd_extended_with_goat() {
     read REPLY
     case "$REPLY" in
         y|Y|'')
+            if [ "$SHELLRC_PATH" = "" ]; then
+                echo "ERROR: $SHELLRC_PATH has not been provided."
+                return 1
+            fi
             echo Adding cd extended with goat ...
             printf "\n%s" \
                 "cd_extended_wth_goat() {"                          \
@@ -27,7 +31,7 @@ install_cd_extended_with_goat() {
                 ""                                                  \
                 "alias cd=\"cd_extended_wth_goat\""                 \
                 ""                                                  \
-                >> "$SHELLRC_FILE"
+                >> "$SHELLRC_PATH"
             ;;
         *)
             echo "Sure! This feature will not be installed."
@@ -58,17 +62,20 @@ add_goat_alias() {
     printf '%s ' \
         "What is the .*rc file where the goat alias should be appened?" \
         "[default: ${HOME}/.bashrc]"
-    read SHELLRC_FILE
+    read SHELLRC_PATH
 
-    [ ! "$SHELLRC_FILE" ] && SHELLRC_FILE="$HOME/.bashrc"
-    echo "Adding alias to ${SHELLRC_FILE} ..."
+    # Expand the ~ to $HOME.
+    SHELL_PATH=$(echo $SHELLRC_PATH | sed -r 's,^\~,'"$HOME"',')
+
+    [ ! "$SHELLRC_PATH" ] && SHELLRC_PATH="$HOME/.bashrc"
+    echo "Adding alias to ${SHELLRC_PATH} ..."
 
     printf "%s" \
         ""                                                   \
         "# Added by goat (https://github.com/0mp/goat)"      \
         "alias goat=\". ${INSTALLATION_DIR}/goat-agent.sh\"" \
         ""                                                   \
-        >> "$SHELLRC_FILE"
+        >> "$SHELLRC_PATH"
 }
 
 install_goat() {
@@ -89,12 +96,12 @@ install_goat() {
     install_cd_extended_with_goat
 }
 
-uninstall_goat() {
-    printf "Are you sure you want to uninstall goat? [y|N] "
+remove_goat() {
+    printf "Are you sure you want to remove goat? [y|N] "
     read REPLY
     case "$REPLY" in
         y|Y)
-            echo Uninstalling goat ...
+            echo Removing goat ...
             if rm -rf "$INSTALLATION_DIR"; then
                 echo "Remove the goat alias from you .*rc file to finish."
             else
@@ -103,7 +110,7 @@ uninstall_goat() {
             fi
             ;;
         *)
-            echo Sure! No uninstalling for the time being.
+            echo Sure! No removing for the time being.
             ;;
     esac
 }
@@ -129,14 +136,14 @@ case "$ACTIVITY" in
     "install")
         install_goat
         ;;
-    "uninstall")
-        uninstall_goat
+    "remove")
+        remove_goat
         ;;
     "update")
         update_goat
         ;;
     *)
-        printf "%s" \
+        printf "%s%s\n%s\n" \
             "Keeper is a little bit confused about your request. " \
             "What's that again?"                                   \
             "Usage: ./${KEEPER_NAME} [install|update]"

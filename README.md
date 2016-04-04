@@ -62,9 +62,9 @@ Paths and aliases are saved in `~/.goat/shortcuts.goat`.
 
         ./goat-keeper update
 
-- Uninstall goat
+- Remove goat
 
-        ./goat-keeper uninstall
+        ./goat-keeper remove
 
 License
 -------
