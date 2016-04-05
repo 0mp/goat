@@ -41,7 +41,7 @@ install_cd_extended_with_goat() {
 
 create_goatagent() {
     touch "$INSTALLATION_DIR"/goat-agent.sh
-    printf "%s" \
+    printf "%s\n" \
         "# goat-agent"                                \
         ""                                            \
         "goat_there() {"                              \
@@ -70,8 +70,7 @@ add_goat_alias() {
     [ ! "$SHELLRC_PATH" ] && SHELLRC_PATH="$HOME/.bashrc"
     echo "Adding alias to ${SHELLRC_PATH} ..."
 
-    printf "%s" \
-        ""                                                   \
+    printf "\n%s" \
         "# Added by goat (https://github.com/0mp/goat)"      \
         "alias goat=\". ${INSTALLATION_DIR}/goat-agent.sh\"" \
         ""                                                   \
