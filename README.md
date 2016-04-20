@@ -69,4 +69,4 @@ Paths and aliases are saved in `~/.goat/shortcuts.goat`.
 License
 -------
 
-Licensed under MIT license. Copyright (c) 2016 Mateusz Piotrowski
+Licensed under MIT license. Copyright &#169; 2016 Mateusz Piotrowski
