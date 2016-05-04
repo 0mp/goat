@@ -23,13 +23,13 @@ install_cd_extended_with_goat() {
             fi
             echo Adding cd extended with goat ...
             printf "\n%s" \
-                "cd_extended_wth_goat() {"                          \
+                "cd_extended_with_goat() {"                          \
                 "    [ \"\$1\" = \"\" ] && command cd"              \
                 "    command cd \"\$1\" 2>/dev/null || "            \
                 "        . $INSTALLATION_DIR/goat-agent.sh \"\$1\"" \
                 "}"                                                 \
                 ""                                                  \
-                "alias cd=\"cd_extended_wth_goat\""                 \
+                "alias cd=\"cd_extended_with_goat\""                 \
                 ""                                                  \
                 >> "$SHELLRC_PATH"
             ;;
