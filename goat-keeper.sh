@@ -12,7 +12,7 @@ copy_goatsh() {
 
 install_cd_extended_with_goat() {
     printf '%s %s ' \
-        "goat can try change directory if cd fails to do so." \
+        "goat can try to change directory if cd fails to do so." \
         "Would you like to add this feature? [Y|n] "
     read REPLY
     case "$REPLY" in
