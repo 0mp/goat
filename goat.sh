@@ -47,6 +47,9 @@ remove_shortcut() {
     line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
     if [ ! -z "$line" ]; then
         sed -e "${line}d" "$SHORTCUTS_FILE" > "$SHORTCUTS_FILE".bak && mv "$SHORTCUTS_FILE".bak "$SHORTCUTS_FILE"
+	echo "$1 is removed as a shortcut"
+    else
+	echo "$1 was not removed, maybe it doesn't exist?"
     fi
 }
 
