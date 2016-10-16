@@ -174,15 +174,13 @@ handle_input() {
 
     # Test existance of the file with shortcuts
     if [ ! -f "$SHORTCUTS_FILE" ];then 
-	 touch "$SHORTCUTS_FILE"
-	 echo  "down ~/Downloads
-doc ~/Documents
-root /
-conf ~/.config/
-proj ~/Projects
-home ~
-scripts /usr/local/bin" > $SHORTCUTS_FILE
-
+	touch "$SHORTCUTS_FILE"
+	create down	~/Downloads &>- 
+	create doc 	~/Documents &>-
+	create root 	/	    &>-     
+	create conf 	~/.config/  &>-
+	create proj 	~/Projects  &>-
+	create home	~	    &>-     	
     fi
 
     if [ $# -eq 0 ]; then
