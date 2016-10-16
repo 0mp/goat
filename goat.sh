@@ -50,6 +50,16 @@ remove_shortcut() {
     fi
 }
 
+remove_broken() {
+	while read p; do
+		local location=$(echo $p | cut -d ' ' -f2)
+		local shortcut=$(echo $p | cut -d ' ' -f1)
+    		if [ $(cd "$location" 1>/dev/null 2>/dev/null && echo 0 || echo 1) -eq 1 ]; then
+			remove_shortcut $shortcut	
+    		fi
+	done <$SHORTCUTS_FILE
+}
+
 # Show usage information
 show_help() {
     echo "\
@@ -148,7 +158,11 @@ configure() {
 
     if [ "$1" = "please" ]; then
         if [ "$2" = "delete" ]; then
-            remove_shortcut "$3" || exit_status=1
+	    if [ "$3" = "broken" ]; then
+	    	remove_broken || exit_status=1 
+	    else
+		remove_shortcut "$3" || exit_status=1
+	    fi
         elif [ "$2" = "help" ] && [ "$3" = "me" ]; then
             show_help
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
