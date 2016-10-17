@@ -95,6 +95,9 @@ go() {
     local path
     path="$(echo "$entry" | cut -d'	' -f2)"
 
+    # Check for previous directory syntax
+    path="$(if_dots "$shortcut")"
+
     if [ -z "$path" ]; then
         errcho "ERROR: goat doesn't know where '${shortcut}' should lead to."
         return 1
@@ -104,6 +107,37 @@ go() {
     else
         echo "$path"
     fi
+}
+
+# Detect a shortcut of all .'s and
+# return an appropriate path of form
+# ../../.. etc.
+#
+# If the shortcut is not all .'s, simply
+# returns the shortcut as-is.
+if_dots() {
+  local shortcut="$1"
+  local prev_dir="../"
+  local path
+
+  # Maintain expected functionality of . and ..
+  if [ "$shortcut" = "." -o "$shortcut" = ".." ]; then
+    path=$shortcut
+    echo $path
+    return 0
+  fi
+
+  path="../"
+  for (( i = 2; i<${#shortcut}; i++ )); do
+    if [ "${shortcut:$i:1}" != "." ]; then
+      echo $shortcut
+      return 1
+    else
+      path=$path$prev_dir
+    fi
+  done
+
+  echo $path
 }
 
 # Create a new shortcut
