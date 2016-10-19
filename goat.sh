@@ -86,17 +86,22 @@ Usage:
 #   - 1 when there was an error
 go() {
     local shortcut="$1"
-    local entry
-    entry="$(get_entry "$shortcut")"
 
-    # Check if get_entry failed
-    [ "$entry" = "1" ] && return 1
-
+    # Check if the entered shortcut is all dots
     local path
-    path="$(echo "$entry" | cut -d'	' -f2)"
+    local dot_path="$(check_dots "$shortcut")"
+    if [ -n "$dot_path" ]; then
+      path=$dot_path
+    # If not all dots, proceed as usual
+    else
+      local entry
+      entry="$(get_entry "$shortcut")"
 
-    # Check for previous directory syntax
-    path="$(if_dots "$shortcut")"
+      # Check if get_entry failed
+      [ "$entry" = "1" ] && return 1
+
+      path="$(echo "$entry" | cut -d'	' -f2)"
+    fi
 
     if [ -z "$path" ]; then
         errcho "ERROR: goat doesn't know where '${shortcut}' should lead to."
@@ -115,25 +120,32 @@ go() {
 #
 # If the shortcut is not all .'s, simply
 # returns the shortcut as-is.
-if_dots() {
+check_dots() {
   local shortcut="$1"
   local prev_dir="../"
-  local path
+  local path=""
 
   # Maintain expected functionality of . and ..
-  if [ "$shortcut" = "." -o "$shortcut" = ".." ]; then
+  if [ "$shortcut" = '.' -o "$shortcut" = '..' ]; then
     path=$shortcut
     echo $path
     return 0
   fi
+  
+  # Dot-checking.
+  if [ "${shortcut:0:1}" != '.' ]; then
+    echo ''
+    return 1
+  fi
 
-  path="../"
-  for (( i = 2; i<${#shortcut}; i++ )); do
-    if [ "${shortcut:$i:1}" != "." ]; then
-      echo $shortcut
-      return 1
-    else
+  for (( i = 1; i<${#shortcut}; i++ )); do
+    if [ "${shortcut:$i:1}" = '.' ]; then
       path=$path$prev_dir
+      # If a non-dot is found, return empty path
+      # (unknown shortcut)
+    else
+      echo ''
+      return 1
     fi
   done
 
