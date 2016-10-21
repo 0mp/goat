@@ -136,6 +136,28 @@ create() {
     return 0
 }
 
+# Verify an existing shortcut
+# Variables:
+#   $1 -> existing shortcut
+# Returns:
+#   - 1 if the shortcut is invalid
+#   - 0 if the shortcut is valid
+
+verify() {
+    local shortcut="$1"
+    local searched_entry="^$shortcut    "
+    local grep_result
+    grep_result=$(grep -n "$searched_entry" "$SHORTCUTS_FILE" 2>/dev/null)
+
+    # Check if there is only one result found by grep
+    number_of_lines=$(echo "$grep_result" | wc -l)
+    if [ "$number_of_lines" -lt 1 ]; then
+        return 1
+    else
+        return 0
+    fi
+
+}
 # Administrate your goat
 # Variables:
 #   $1 -> "please"
@@ -149,6 +171,8 @@ configure() {
     if [ "$1" = "please" ]; then
         if [ "$2" = "delete" ]; then
             remove_shortcut "$3" || exit_status=1
+        elif [ "$2" = "verify" ]; then
+            verify "$3" || exit_status=1
         elif [ "$2" = "help" ] && [ "$3" = "me" ]; then
             show_help
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
