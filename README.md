@@ -19,7 +19,7 @@ Installation
 
     git clone https://github.com/0mp/goat
     cd goat
-    ./goat-keeper install
+    ./goat-keeper.sh install
     source ~/.bashrc
 
 Usage
