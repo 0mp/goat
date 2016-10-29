@@ -2,6 +2,10 @@
 
 SHORTCUTS_FILE="$HOME/.goat/shortcuts.goat"
 
+if [ -z $EDITOR ]; then
+   EDITOR=nano
+fi
+
 # Stderr echo wrapper
 errcho(){
     >&2 echo $@
@@ -61,6 +65,9 @@ Usage:
             Change to a directory assigned to <shortcut>.
 
     goat please list shortcuts
+            List all your saved shortcuts.
+
+    goat please edit shortcuts
             List all your saved shortcuts.
 
     goat please nuke shortcuts
@@ -153,6 +160,8 @@ configure() {
             show_help
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
             cat "$SHORTCUTS_FILE" || exit_status=1
+        elif [ "$2" = "edit" ] && [ "$3" = "shortcuts" ]; then
+            $EDITOR "$SHORTCUTS_FILE" || exit_status=1
         elif [ "$2" = "nuke" ] && [ "$3" = "shortcuts" ]; then
             rm "$SHORTCUTS_FILE" || exit_status=1
         else
