@@ -68,7 +68,7 @@ Usage:
             List all your saved shortcuts.
 
     goat please edit shortcuts
-            List all your saved shortcuts.
+            Edit your saved shortcuts.
 
     goat please nuke shortcuts
             Delete all saved shortcuts.
