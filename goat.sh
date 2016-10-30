@@ -152,7 +152,7 @@ check_dots() {
     echo $path
     return 0
   fi
-  
+
   # Dot-checking.
   if [ "${shortcut:0:1}" != '.' ]; then
     echo ''
