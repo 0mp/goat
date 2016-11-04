@@ -69,6 +69,9 @@ Usage:
     goat please delete <shortcut>
             Delete <shortcut> from your saved shortcuts.
 
+    goat please verify <shortcut>
+            Verify whether there is only one shorcut called <shortcut>.
+
     goat
             Print this help message.
 

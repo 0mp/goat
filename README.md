@@ -41,6 +41,12 @@ Usage
 
         goat please delete <shortcut>
 
+- Verify whether there is only one shorcut called <shortcut>
+
+  ```text
+  goat please verify <shortcut>
+  ```
+
 - Delete all saved shortcuts
 
         goat please nuke shortcuts
