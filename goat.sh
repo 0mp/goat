@@ -72,6 +72,9 @@ Usage:
     goat please delete <shortcut>
             Delete <shortcut> from your saved shortcuts.
 
+    goat please verify <shortcut>
+            Verify whether there is only one shorcut called <shortcut>.
+
     goat
             Print this help message.
 
@@ -139,6 +142,29 @@ create() {
     return 0
 }
 
+# Verify if the shortcut exists
+# Variables:
+#   $1 -> the shortcut
+# Returns:
+#   - 1, if the shortcut is invalid
+#   - 0, if the shortcut is valid
+verify() {
+    local shortcut="$1"
+    local searched_entry="^$shortcut	"
+    local grep_result
+    grep_result=$(grep -n "$searched_entry" "$SHORTCUTS_FILE" 2>/dev/null)
+
+    # Check if there is only one result found by grep
+    if [ "$(printf "$grep_result" | tr -d "\n")" == "" ] \
+        && [ "$(printf "%s" "$grep_result" | wc -l)" -ne 1 ]; then
+        errcho "INFO: goat couldn't find your shortcut"
+        return 1
+    else
+        errcho "INFO: goat found your shortcut"
+        return 0
+    fi
+}
+
 # Administrate your goat
 # Variables:
 #   $1 -> "please"
@@ -152,6 +178,8 @@ configure() {
     if [ "$1" = "please" ]; then
         if [ "$2" = "delete" ]; then
             remove_shortcut "$3" || exit_status=1
+        elif [ "$2" = "verify" ]; then
+            verify "$3" || exit_status=1
         elif [ "$2" = "help" ] && [ "$3" = "me" ]; then
             show_help
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
@@ -159,11 +187,11 @@ configure() {
         elif [ "$2" = "nuke" ] && [ "$3" = "shortcuts" ]; then
             rm "$SHORTCUTS_FILE" || exit_status=1
         else
-            echo "ERROR: goat just doesn't know what to do with itself."
+            errcho "ERROR: goat just doesn't know what to do with itself."
             exit_status=1
         fi
     else
-        echo "FAUX PAS: goat doesn't like that kind of tone."
+        errcho "FAUX PAS: goat doesn't like that kind of tone."
         exit_status=1
     fi
     return $exit_status
