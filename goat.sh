@@ -12,6 +12,8 @@ if [ -n "$EDITOR" ]; then
     EDITOR_COMMAND="$EDITOR"
 elif command -v editor >/dev/null 2>&1; then
     EDITOR_COMMAND="editor"
+elif command -v vi >/dev/null 2>&1; then
+    EDITOR_COMMAND="vi"
 else
     EDITOR_COMMAND=""
 fi
