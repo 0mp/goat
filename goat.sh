@@ -47,6 +47,9 @@ remove_shortcut() {
     line=$(grep -n "$removed_entry" "$SHORTCUTS_FILE" | cut -d: -f1)
     if [ ! -z "$line" ]; then
         sed -e "${line}d" "$SHORTCUTS_FILE" > "$SHORTCUTS_FILE".bak && mv "$SHORTCUTS_FILE".bak "$SHORTCUTS_FILE"
+        errcho "INFO: goat removed the '$1' shortcut"
+    else
+        errcho "INFO: goat didn't remove '$1'; maybe it doesn't exist?"
     fi
 }
 
@@ -128,7 +131,7 @@ create() {
     path=$(cd -- "$path" && pwd -P 2>/dev/null | pwd)
 
     # Remove the old shortcut
-    remove_shortcut "$shortcut"
+    remove_shortcut "$shortcut" 2>/dev/null
 
     # Add new shortcut
     echo "$shortcut	$path" >> "$SHORTCUTS_FILE"
