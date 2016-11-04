@@ -12,6 +12,8 @@ if [ -n "$EDITOR" ]; then
     EDITOR_COMMAND="$EDITOR"
 elif command -v editor >/dev/null 2>&1; then
     EDITOR_COMMAND="editor"
+elif command -v vi >/dev/null 2>&1; then
+    EDITOR_COMMAND="vi"
 else
     EDITOR_COMMAND=""
 fi
@@ -246,7 +248,7 @@ configure() {
                 errcho "ERROR: goat doesn't know what command to use. Please set EDITOR."
                 exit_status=1
             else
-                $EDITOR_COMMAND "$SHORTCUTS_FILE" < `tty` > `tty` || exit_status=1
+                $EDITOR_COMMAND "$SHORTCUTS_FILE" < $(tty) > $(tty) || exit_status=1
             fi
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
             cat "$SHORTCUTS_FILE" || exit_status=1
