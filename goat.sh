@@ -7,6 +7,16 @@ errcho(){
     >&2 echo $@
 }
 
+# Check for $EDITOR and editor in the path
+if [ -n "$EDITOR" ]; then
+    EDITOR_COMMAND="$EDITOR"
+elif command -v editor >/dev/null 2>&1; then
+    EDITOR_COMMAND="editor"
+else
+    EDITOR_COMMAND=""
+fi
+
+
 # Load a certain entry from the file
 #
 # Variables:
@@ -65,6 +75,9 @@ Usage:
 
     goat please list shortcuts
             List all your saved shortcuts.
+
+    goat please edit shortcuts
+            Edit all your saved shortcuts in an editor.
 
     goat please nuke shortcuts
             Delete all saved shortcuts.
@@ -228,6 +241,13 @@ configure() {
             verify "$3" || exit_status=1
         elif [ "$2" = "help" ] && [ "$3" = "me" ]; then
             show_help
+        elif [ "$2" = "edit" ] && [ "$3" = "shortcuts" ]; then
+            if [ -z "$EDITOR_COMMAND" ]; then
+                errcho "ERROR: goat doesn't know what command to use. Please set EDITOR."
+                exit_status=1
+            else
+                $EDITOR_COMMAND "$SHORTCUTS_FILE" < `tty` > `tty` || exit_status=1
+            fi
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
             cat "$SHORTCUTS_FILE" || exit_status=1
         elif [ "$2" = "nuke" ] && [ "$3" = "shortcuts" ]; then
