@@ -171,7 +171,7 @@ configure() {
                 errcho "ERROR: goat doesn't know what command to use. Please set EDITOR."
                 exit_status=1
             else
-                $EDITOR_COMMAND "$SHORTCUTS_FILE" < `tty` > `tty` || exit_status=1
+                $EDITOR_COMMAND "$SHORTCUTS_FILE" < $(tty) > $(tty) || exit_status=1
             fi
         elif [ "$2" = "list" ] && [ "$3" = "shortcuts" ]; then
             cat "$SHORTCUTS_FILE" || exit_status=1
