@@ -86,7 +86,7 @@ your custom installation of `goat`.
 
 ## Development
 
-The see `CONTRIBUTING.md`.
+See `CONTRIBUTING.md`.
 
 ## License
 
