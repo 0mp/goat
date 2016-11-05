@@ -35,7 +35,7 @@ gh_abort() {
 # Print usage and exit.
 gh_usage() {
   cat <<EOF
-usage: $0 option [arg]
+usage: $0 option [arg] [option [arg] ...]
   options:
     clean
       -- clean up target/; useful for development
@@ -187,33 +187,38 @@ gh_remove() {
 # $@ -> All the command line arguments.
 gh_run() {
   [ "$#" -ge 1 ] || gh_abort "provide at least one argument"
-  readonly action="$1"
 
-  case "$action" in
-    'clean')
-      gh_clean
-      ;;
-    'install')
-      gh_install
-      ;;
-    'remove')
-      gh_remove
-      ;;
-    'target')
-      if [ "$#" -lt 2 ]; then
-        gh_target_leash
-        gh_target_goat
-      elif [ "$2" = 'leash' ]; then
-        gh_target_leash
-      elif [ "$2" = 'goat' ]; then
-        gh_target_goat
-      else
+  while [ "$#" -gt 0 ]; do
+    action="$1"
+    shift 1
+    case "$action" in
+      'clean')
+        gh_clean
+        ;;
+      'install')
+        gh_install
+        ;;
+      'remove')
+        gh_remove
+        ;;
+      'target')
+        if [ "$#" -ge 1 ]; then
+          if [ "$1" = 'leash' ]; then
+            gh_target_leash
+            shift 1
+          elif [ "$1" = 'goat' ]; then
+            gh_target_goat
+            shift 1
+          fi
+        else
+          gh_target_leash
+          gh_target_goat
+        fi
+        ;;
+      *)
         gh_usage
-      fi
-      ;;
-    *)
-      gh_usage
-  esac
+    esac
+  done
 }
 
 gh_run "$@"

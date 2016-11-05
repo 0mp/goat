@@ -45,8 +45,7 @@ jump to its destination.
 ```sh
 git clone https://github.com/0mp/goat
 cd goat
-./goatherd target
-./goatherd install
+./goatherd target install
 . ~/.bashrc
 ```
 
