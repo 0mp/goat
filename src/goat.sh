@@ -32,6 +32,10 @@ gt_info() {
   >&2 printf "INFO: %s\n" "$1"
 }
 
+gt_echo() {
+  printf "%s" "$1"
+}
+
 # Remove an absolute shortcut from a file. Do nothing if there is no such an
 # absolute shortcut
 # Variables:
@@ -85,13 +89,14 @@ Usage:
 
 # TODO
 gt_resolve_as_absolute() {
-  candidatepaths="$(grep -n "^$gSHORTCUT	/" "$kSHORTCUTS")"
+  candidatepaths="$(grep -n "^$(gt_echo "$gSHORTCUT" | sed "s/\./\\\./g")	/" \
+    "$kSHORTCUTS")"
   if [ -z "$candidatepaths" ]; then
     return 1
   fi
   case "$(printf "%s\n" "$candidatepaths" | wc -l | tr -d '[:space:]')" in
     '1')
-      gRESOLVED_PATH="$(printf "%s" "$candidatepaths" | cut -f2)"
+      gRESOLVED_PATH="$(gt_echo "$candidatepaths" | cut -f2)"
       return 0
       ;;
     '0')
@@ -111,17 +116,17 @@ gt_resolve_as_absolute() {
 # TODO
 gt_resolve_as_relative() {
   candidatepaths="$(grep -n "^$gSHORTCUT	\." "$kSHORTCUTS")"
-  case "$(printf "%s" "$candidatepaths" | wc -l | tr -d '[:space:]')" in
+  case "$(gt_echo "$candidatepaths" | wc -l | tr -d '[:space:]')" in
     '1')
-      gRESOLVED_PATH="$(printf "%s" "$candidatepaths" | cut -d"\t" -f2)"
+      gRESOLVED_PATH="$(gt_echo "$candidatepaths" | cut -d"\t" -f2)"
       return 0
       ;;
     '0')
       return 1
       ;;
     *)
-      printf "%s" "$candidatepaths" | while read -r candidate; do
-        gRESOLVED_PATH="$(printf "%s" "$candidate" | cut -d"\t" -f2)"
+      gt_echo "$candidatepaths" | while read -r candidate; do
+        gRESOLVED_PATH="$(gt_echo "$candidate" | cut -d"\t" -f2)"
         if [ -d "$gRESOLVED_PATH" ]; then
           return 0
         fi
@@ -141,12 +146,12 @@ gt_resolve_as_dots() {
     return 1
   fi
 
-  if [ "$gSHORTCUT" != "$(printf "%s" "$gSHORTCUT" | tr -d -c '.')" ]; then
+  if [ "$gSHORTCUT" != "$(gt_echo "$gSHORTCUT" | tr -d -c '.')" ]; then
     return 1
   fi
 
   # Now we know there are only dots in the shortcut.
-  gRESOLVED_PATH="$(printf "%s" "$gSHORTCUT" | sed 's/\./\.\.\//g')"
+  gRESOLVED_PATH="$(gt_echo "$gSHORTCUT" | sed 's/\./\.\.\//g')"
 
   if [ -z "$gRESOLVED_PATH" ]; then
     return 1

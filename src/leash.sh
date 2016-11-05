@@ -6,5 +6,9 @@
 
 # TODO
 goat() {
-  command cd "$(sh "$kINSTALLATION_DIR/$kGOAT" "$@")"
+  if [ "$#" -eq '1' ]; then
+    command cd "$(sh "$kINSTALLATION_DIR/$kGOAT" "$@")"
+  else
+    sh "$kINSTALLATION_DIR/$kGOAT" "$@"
+  fi
 }
