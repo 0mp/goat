@@ -18,12 +18,16 @@ seahorses wallpapers
 > `goat` is a hacky shortcut utility for managing your shortcuts!
 >
 > _~ 0mp_
+
 <!-- -->
+
 > Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
 > **real ninjas**. I'm cloning it straight away!
 >
 > _~ 0mp, again_
+
 <!-- -->
+
 > Rad! I can do `cd ....` now instead of performing a horse galloping-like
 > waltz `../` being my dance floor.
 >
