@@ -240,7 +240,7 @@ gt_configure() {
     'edit')
       if [ "$3" = "shortcuts" ]; then
         # shellcheck disable=SC2094
-        $kEDITOR "$kSHORTCUTS" < tty > tty || gEXIT_STATUS=1
+        $kEDITOR "$kSHORTCUTS" < "$(tty)" > "$(tty)" || gEXIT_STATUS=1
       fi
       ;;
     'help')

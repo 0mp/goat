@@ -144,10 +144,14 @@ gh_install() {
   sed -n '$p' "$kSHELLRC" | grep -c "^$" >/dev/null 2>&1 && \
     printf "\n" >> "$kSHELLRC"
 
-  printf "%s\n%s\n" \
-    '# Added by goat (https://github.com/0mp/goat)' \
-    ". $kINSTALLATION_DIR/$kLEASH" \
-    >> "$kSHELLRC"
+  # Don't add this lines if they are aleady present.
+  if ! grep '# Added by goat (https://github.com/0mp/goat)' "$kSHELLRC" \
+    >/dev/null 2>&1; then
+    printf "%s\n%s\n" \
+      '# Added by goat (https://github.com/0mp/goat)' \
+      ". $kINSTALLATION_DIR/$kLEASH" \
+      >> "$kSHELLRC"
+  fi
 }
 
 # TODO
