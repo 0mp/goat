@@ -240,7 +240,8 @@ gt_configure() {
 
   case "$2" in
     'delete')
-      gt_remove "$3" || gEXIT_STATUS=1
+      gSHORTCUT="$3"
+      gt_remove || gEXIT_STATUS=1
       ;;
     'edit')
       if [ "$3" = "shortcuts" ]; then
