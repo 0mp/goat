@@ -55,36 +55,28 @@ gt_remove() {
 # Show usage information
 # TODO
 gt_usage() {
-  echo "\
-Usage:
-    goat <shortcut> <directory>
-            Create a <shortcut> to <directory>.
-
-    goat <shortcut>
-            Change to a directory assigned to <shortcut>.
-
-    goat please list shortcuts
-            List all your saved shortcuts.
-
-    goat please edit shortcuts
-            Edit all your saved shortcuts in an editor.
-
-    goat please nuke shortcuts
-            Delete all saved shortcuts.
-
-    goat please delete <shortcut>
-            Delete <shortcut> from your saved shortcuts.
-
-    goat please verify <shortcut>
-            Verify whether there is only one shorcut called <shortcut>.
-
-    goat
-            Print this help message.
-
-    goat please help me
-            Print this help message."
-
-            return 0
+  cat <<EOF
+usage: goat [<shortcut> | <shortcut> <path> | please [<arg> ...]]
+  options:
+    <shortcut> <directory>
+      -- create a <shortcut> to a <directory>
+    <shortcut>
+      -- go to a directory assigned to <shortcut>; if a <shortcut> consists of
+         dots only then it will expand every '.' to '../'
+  pleases:
+    list shortcuts
+      -- list all your saved shortcuts
+    edit shortcuts
+      -- edit all your saved shortcuts in an editor
+    nuke shortcuts
+      -- delete all saved shortcuts
+    delete <shortcut>
+      -- delete <shortcut> from your saved shortcuts
+    help me
+      -- print this help message
+EOF
+  gEXIT_STATUS=1
+  return 1
 }
 
 # TODO
@@ -139,13 +131,6 @@ gt_resolve_as_relative() {
 
 # TODO
 gt_resolve_as_dots() {
-  if [ "$gSHORTCUT" = '.' ] || [ "$gSHORTCUT" = '..' ]; then
-    gt_error "goat shouldn't even consider resolving . or ..;" \
-      'there must be a bug; notify the goat owner immediately at once'
-    gEXIT_STATUS=1
-    return 1
-  fi
-
   if [ "$gSHORTCUT" != "$(gt_echo "$gSHORTCUT" | tr -d -c '.')" ]; then
     return 1
   fi

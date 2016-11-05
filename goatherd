@@ -32,10 +32,20 @@ gh_abort() {
   exit 1
 }
 
-# Print usage.
-# TODO
+# Print usage and exit.
 gh_usage() {
-  printf "usage\n"
+  cat <<EOF
+usage: $0 option [arg]
+  options:
+    clean
+      -- clean up target/; useful for development
+    install
+      -- install goat; run $0 target first however
+    remove
+      -- uninstall goat
+    target [leash|goat]
+      -- build a specified target; build all targets if none is specified
+EOF
   exit 1
 }
 
