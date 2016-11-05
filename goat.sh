@@ -272,7 +272,15 @@ handle_input() {
     local exit_status=0
 
     # Test existance of the file with shortcuts
-    [ ! -f "$SHORTCUTS_FILE" ] && touch "$SHORTCUTS_FILE"
+    if [ ! -f "$SHORTCUTS_FILE" ];then 
+	touch "$SHORTCUTS_FILE"
+	create down	~/Downloads &>- 
+	create doc 	~/Documents &>-
+	create root 	/	    &>-     
+	create conf 	~/.config/  &>-
+	create proj 	~/Projects  &>-
+	create home	~	    &>-     	
+    fi
 
     if [ $# -eq 0 ]; then
         show_help || exit_status=1
