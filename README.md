@@ -1,6 +1,7 @@
 # goat
 
 [![Build Status](https://travis-ci.org/0mp/goat.svg?branch=master)](https://travis-ci.org/0mp/goat)
+[![POSIX Compliance](https://img.shields.io/badge/POSIX-compliant-blue.svg)](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 
 ### Quick example
 
@@ -12,33 +13,28 @@ seahorses wallpapers
 [ ~/Documents/dev ] $
 ```
 
->
->
-> _
+### Overview
+
 > `goat` is a hacky shortcut utility for managing your shortcuts!
 >
 > _~ 0mp_
 
-<!-- -->
+Sometimes you jump around your filesystem tree a lot and you end up putting a
+couple of ugly aliases into your shell's rc file.
 
 > Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
-> **real ninjas**. I'm cloning it straight away!
+> **real ninjas**. I'm cloning this goat straight away!
 >
 > _~ 0mp, again_
 
-<!-- -->
+With `goat` you can easily manage your ninja shortcuts - just type `goat p
+~/Projects` to introduce a new shortcut and then `goat p` (or even `cd p`!) to
+jump to its destination.
 
 > Rad! I can do `cd ....` now instead of performing a horse galloping-like
 > waltz with `../` being my miserable dance floor.
 >
 > _~ YA0mp_
-
-Sometimes you jump around your filesystem tree a lot and you end up putting a
-couple of ugly aliases into your shell's rc file.
-
-With `goat` you can easily manage your ninja shortcuts - just type `goat p
-~/Projects` to introduce a new shortcut and then `goat p` (or even `cd p`!) to
-jump to its destination.
 
 ## Installation
 
@@ -82,7 +78,7 @@ goat please help me
 
 ## Configuration
 
-`goat lives in in `$HOME/.goat/` by default and shortcuts are
+`goat` lives in in `$HOME/.goat/` by default and shortcuts are
 stored in `$HOME/.goat/shortcuts.config`.
 
 See `goatherd.config`, `src/leash.config` and `src/goat.config` to configure
@@ -92,7 +88,6 @@ your custom installation of `goat`.
 
 The see `CONTRIBUTING.md`.
 
-License
--------
+## License
 
 Licensed under MIT license. Copyright &#169; 2016 Mateusz Piotrowski
