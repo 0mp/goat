@@ -1,6 +1,7 @@
 #!/bin/sh
 
 SHORTCUTS_FILE="$HOME/.goat/shortcuts.goat"
+RELATIVE_FILE="$HOME/.goat/relative.goat"
 
 # Stderr echo wrapper
 errcho(){
@@ -48,6 +49,28 @@ get_entry() {
     fi
 
 }
+
+#Adds relative mapping to a file
+add_relative() {
+	echo "$1 $2" >> "$RELATIVE_FILE"	
+}
+
+translate() {
+	local new
+	new=$1
+	while read p; do
+		local rel=$(echo $p | cut -d ' ' -f1)
+		local rep=$(echo $p | cut -d ' ' -f2)
+		if [ $new==$rel ]; then
+			rep=$(echo $rep | sed -e 's/[\.\/&]/\\&/g') 
+			rel=$(echo $rel | sed -e 's/[\.\/&]/\\&/g') 
+			new=$(echo $new | sed "s/$rel/$rep/g")
+		fi
+	done <$RELATIVE_FILE
+	echo "$new"
+}	
+	
+
 
 # Remove a certain entry from a file. If there is no such entry do nothing
 # Variables:
@@ -183,12 +206,12 @@ check_dots() {
 create() {
     local shortcut="$1"
     local path
-    path="$2"
-
+    path="$(translate "$2")"
     # Check if the path exists
     if [ $(cd "$path" 1>/dev/null 2>/dev/null && echo 0 || echo 1) -eq 1 ]; then
         errcho "ERROR: goat thinks that '${path}' isn't a valid path."
         return 1
+
     fi
 
     # Get the absolute path
@@ -254,6 +277,8 @@ configure() {
             cat "$SHORTCUTS_FILE" || exit_status=1
         elif [ "$2" = "nuke" ] && [ "$3" = "shortcuts" ]; then
             rm "$SHORTCUTS_FILE" || exit_status=1
+        elif [ "$2" = "add" ] && [ "$3" = "relative" ]; then
+		add_relative "$4" "$5"  
         else
             errcho "ERROR: goat just doesn't know what to do with itself."
             exit_status=1
@@ -273,6 +298,7 @@ handle_input() {
 
     # Test existance of the file with shortcuts
     [ ! -f "$SHORTCUTS_FILE" ] && touch "$SHORTCUTS_FILE"
+    [ ! -f "$RELATIVE_FILE" ] && touch "$RELATIVE_FILE"
 
     if [ $# -eq 0 ]; then
         show_help || exit_status=1
@@ -282,6 +308,8 @@ handle_input() {
         create "$1" "$2" || exit_status=1
     elif [ $# -eq 3 ]; then
         configure "$1" "$2" "$3" || exit_status=1
+    elif [ $# -eq 5 ]; then
+	configure "$1" "$2" "$3" "$4" "$5" || exit_status=1
     fi
 
     exit $exit_status
