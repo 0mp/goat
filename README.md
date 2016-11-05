@@ -29,7 +29,7 @@ seahorses wallpapers
 <!-- -->
 
 > Rad! I can do `cd ....` now instead of performing a horse galloping-like
-> waltz `../` being my dance floor.
+> waltz with `../` being my miserable dance floor.
 >
 > _~ YA0mp_
 
