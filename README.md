@@ -1,99 +1,118 @@
-goat
-====
+# goat
 
-`goat` is a hacky shortcut utility for managing your shortcuts.
+[![Build Status](https://travis-ci.org/0mp/goat.svg?branch=master)](https://travis-ci.org/0mp/goat)
 
-You can assign some awesome aliases to those boring paths of yours using
-`goat`.
+>
+>
+> _
+> `goat` is a hacky shortcut utility for managing your shortcuts!
+>
+> _~ 0mp_
 
-`goat` can run after every failed `cd`. It means if you typed `cd dev` and
-there is no `./dev/` directory, `goat` will treat `dev` as a shortcut and try
-to go to the corresponding directory.
+_ _
 
-```text
-# Example of the usage of cd extended with goat
-[ ~/Pictures/ ] $ goat dev ~/Documents/dev # Create a shortcut to dev
-[ ~/Pictures/ ] $ ls # There is no ~/Pictures/dev directory
+> Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
+> **real ninjas**. I'm cloning it straight away!
+>
+> _~ 0mp, again_
+
+_ _
+
+> Rad! I can do `cd ....` now instead of performing a horse galloping-like
+> waltz `../` being my dance floor.
+>
+> _~ YA0mp_
+
+Sometimes you jump around your filesystem tree a lot and you end up putting a
+couple of ugly aliases into your shell's rc file.
+
+With `goat` you can easily manage your ninja shortcuts - just type `goat p
+~/Projects` to introduce a new shortcut and then `goat p` (or even `cd p`!) to
+jump to its destination.
+
+### Quick example
+
+```sh
+[ ~/Pictures/ ] $ goat dev ~/Documents/dev # create a shortcut to dev
+[ ~/Pictures/ ] $ ls # there is no ~/Pictures/dev directory
 seahorses wallpapers
-[ ~/Pictures/ ] $ cd dev # cd fails so goat tries to take us to dev if known
+[ ~/Pictures/ ] $ cd dev # cd fails so goat will use its 'dev' shortcut
 [ ~/Documents/dev ] $
 ```
 
-Installation
-------------
+## Installation
 
 ```sh
 git clone https://github.com/0mp/goat
 cd goat
-./goat-keeper.sh install
-source ~/.bashrc
+./goatherd target
+./goatherd install
+. ~/.bashrc
 ```
 
-Usage
------
+`goat` should work with other shells as well. I encourage you to tweak
+`*.config` files to change things like the default installation directory and
+shell.
 
-- Create a `<shortcut>` to a `<directory>`
+## Usage
 
-  ```text
-  goat <shortcut> <directory>
+- Create a `shortcut` to a `directory`
+
+  ```sh
+  goat shortcut directory
   ```
 
-- Change directory to a directory assigned to a `<shortcut>`
+- Change directory to a directory assigned to a `shortcut`
 
-  ```text
-  goat <shortcut>
+  ```sh
+  goat shortcut
+  ```
+
+- Go up the filesystem tree with `...` instead of `../../`
+
+  ```sh
+  goat ...
   ```
 
 - List all your saved shortcuts
 
-  ```text
+  ```sh
   goat please list shortcuts
   ```
 
-- Delete a `<shortcut>` from your saved shortcuts
+- Delete an _absolute_ `shortcut` from your saved shortcuts
 
-  ```text
-  goat please delete <shortcut>
-  ```
-
-- Verify whether there is only one shorcut called <shortcut>
-
-  ```text
-  goat please verify <shortcut>
+  ```sh
+  goat please delete shortcut
   ```
 
 - Delete all saved shortcuts
 
-  ```text
+  ```sh
   goat please nuke shortcuts
   ```
 
 - Print the help message
 
-  ```text
+  ```sh
   goat
   ```
 
-  ```text
+  ```sh
   goat please help me
   ```
 
-Configuration
--------------
+## Configuration
 
-Paths and aliases are saved in `~/.goat/shortcuts.goat`.
+`goat lives in in `$HOME/.goat/` by default and shortcuts are
+stored in `$HOME/.goat/shortcuts.config`.
 
-- Update goat
+See `goatherd.config`, `src/leash.config` and `src/goat.config` to configure
+your custom installation of `goat`.
 
-  ```text
-  ./goat-keeper update
-  ```
+## Development
 
-- Remove goat
-
-  ```sh
-  ./goat-keeper remove
-  ```
+The see `CONTRIBUTING.md`.
 
 License
 -------
