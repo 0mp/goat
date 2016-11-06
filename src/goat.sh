@@ -136,7 +136,7 @@ gt_resolve_as_dots() {
   fi
 
   # Now we know there are only dots in the shortcut.
-  gRESOLVED_PATH="$(gt_echo "$gSHORTCUT" | sed 's/\./\.\.\//g')"
+  gRESOLVED_PATH="$(gt_echo "$gSHORTCUT" | sed 's/\.//' | sed 's/\./\.\.\//g')"
 
   if [ -z "$gRESOLVED_PATH" ]; then
     return 1
