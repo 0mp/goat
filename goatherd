@@ -202,7 +202,7 @@ gh_run() {
         gh_remove
         ;;
       'target')
-        if [ "$#" -ge 1 ]; then
+        if [ "$#" -gt 1 ]; then
           if [ "$1" = 'leash' ]; then
             gh_target_leash
             shift 1
