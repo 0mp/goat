@@ -3,15 +3,17 @@
 # lint - Test POSIX complience and quality with checkbashisms and shellcheck.
 #
 # Usage: ./lint
+#
 
-gEXIT_STATUS='0'
+files="./goat ./setup ./lint ./libgoat.sh"
+exitstatus='0'
 
-shellcheck --shell=sh ./target/goat.sh || gEXIT_STATUS='1'
-shellcheck --shell=sh ./target/leash.sh || gEXIT_STATUS='1'
-shellcheck --shell=sh --external-sources ./goatherd.config ./goatherd || gEXIT_STATUS='1'
+for file in $files
+do
+	shellcheck -e SC1007,SC2015 --shell=sh "$file" || exitstatus='1'
+	checkbashisms -npfx "$file" || exitstatus='1'
+done
 
-checkbashisms -npfx ./target/goat.sh || gEXIT_STATUS='1'
-checkbashisms -npfx ./target/leash.sh || gEXIT_STATUS='1'
-checkbashisms -npfx ./goatherd || gEXIT_STATUS='1'
+exit "$exitstatus"
 
-exit "$gEXIT_STATUS"
+# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

@@ -1,0 +1,87 @@
+#! /bin/sh
+#
+# setup - A simple script for automatic installation of goat.
+#
+
+set -eu
+
+# Configuration.
+default_goat_path="$HOME/.goat"
+GOAT_PATH="$default_goat_path"
+destdir="$HOME/bin"
+goat="$PWD/goat"
+libgoat="$PWD/libgoat.sh"
+shellrc="$HOME/.bashrc"
+tmpshellrc="$PWD/$(dirname -- "$shellrc")"
+
+errxit()
+{
+	printf "error: %s\n" "$*"
+	trap - EXIT #TODO
+	exit 1
+}
+
+usage()
+{
+	cat <<EOF
+Usage: ./setup [-d|-h|-p|-s]
+
+Options:
+    -d, --destination DIR
+        Set the directory to install the goat script. Remember to make sure that
+        this directory is added to your \$PATH. Default: "\$HOME/bin".
+
+    -h, --help
+        Show this help message and exit.
+
+    -p, --path DIR
+        Set the GOAT_PATH value. Default: "\$HOME/.goat".
+
+    -s, --shellrc FILE
+        Set the path to the shellrc file where a line sourcing libgoat.sh will
+	be added. Default: "$HOME/.bashrc"
+EOF
+}
+
+while [ $# -gt 0 ]
+do
+	case "$1" in
+		-d|--destination)
+			destdir="$2"
+			shift 2
+			;;
+		-h|--help)
+			usage
+			exit 0
+			;;
+		-p|--path)
+			GOAT_PATH="$2"
+			shift 2
+			;;
+		*)
+			errxit "Unknown option '$1'"
+			;;
+	esac
+done
+
+mkdir -p "$destdir"
+cp "$goat" "$libgoat" "$destdir"
+
+if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 1>&2 2>/dev/null
+then
+	cp "$shellrc" "$tmpshellrc"
+	if [ x"$default_goat_path" != x"$GOAT_PATH" ]
+	then
+		printf 'export GOAT_PATH=%s\n' "$GOAT_PATH" >> "$tmpshellrc"
+	fi
+	cat <<EOF >>"$tmpshellrc"
+# Added by goat (https://github.com/0mp/goat)
+. $GOAT_PATH/libgoat.sh
+EOF
+	mv "$tmpshellrc" "$shellrc"
+else
+	printf "Nothing has been added to %s it is already properly set up\n" \
+	    "$shellrc"
+fi
+
+# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

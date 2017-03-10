@@ -1,0 +1,141 @@
+#! /bin/sh
+#
+# goat - A POSIX-compliant shell movement boosting hack for real ninjas.
+#
+#        This script is a configuration tool for the lightweight framework
+#        capable of organizing the shortcuts for the `cd` shell built-in.
+#
+
+set -eu
+
+GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
+
+program=goat
+version=2.0.0
+
+usage()
+{
+	cat <<-EOF
+Usage: $program [COMMAND]
+Commands:
+    delete LINK
+        Delete a link from \$GOAT_PATH.
+
+    fix
+        Remove broken links.
+
+    help
+        Show help.
+
+    link LINK DEST
+        Create a symbolic link between \$GOAT_PATH/LINK and DEST. The link
+        keyword is usually optional, i.e., '$program LINK DEST' is sufficient
+        if it doesn't conflict with other goat commands. The link is created
+        for the absolute path of the DEST directory.
+
+    list
+        Show a list of all shortcuts.
+
+    nuke
+        Delete all the links.
+
+    version
+        Show version.
+EOF
+}
+
+errxit()
+{
+	printf "error: %s\n" "$*"
+	trap - EXIT
+	exit 1
+}
+
+delete()
+{
+	if [ -L "$1" ]
+	then
+		rm -- "$1"
+	fi
+}
+
+fix()
+{
+	for link in "$GOAT_PATH/"*
+	do
+		if ! command cd -- "$link" 1>&2 2>/dev/null
+		then
+			delete "$link"
+		fi
+	done
+}
+
+nuke()
+{
+	for link in "$GOAT_PATH/"*
+	do
+		if [ -L "$link" ]
+		then
+			delete "$link"
+		fi
+	done
+}
+
+link()
+{
+	targetpath="$(CDPATH= command cd -- "$2" && pwd -P 2>/dev/null || pwd)"
+	if [ -L "$GOAT_PATH/$1" ]
+	then
+		rm "$GOAT_PATH/$1"
+	fi
+
+	ln -fs -- "$targetpath" "$GOAT_PATH/$1"
+}
+
+if [ $# -eq 0 ]
+then
+	usage
+	exit 0
+fi
+
+trap usage EXIT
+case "$#" in
+	1)
+		case "$1" in
+			f*)
+				fix
+				;;
+			-h|--help|h*)
+				usage
+				;;
+			l*)
+				ls -Al -- "$GOAT_PATH"
+				;;
+			nuke)
+				nuke
+				;;
+			--version|v*)
+				printf "%s\n" "$version"
+				;;
+			*)
+				errxit "'$1' is an invalid command"
+				;;
+		esac
+		;;
+	*)
+		case "$1" in
+			delete)
+				delete "$GOAT_PATH/$2"
+				;;
+			link)
+				link "$2" "$3"
+				;;
+			*)
+				link "$1" "$2"
+				;;
+		esac
+		;;
+esac
+trap - EXIT
+
+# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

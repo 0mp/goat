@@ -1,0 +1,66 @@
+#! /bin/sh -
+#
+# Test suite for goat.
+#
+# Usage:
+# GOAT_PATH= ./test
+#
+
+set -eu
+
+err()
+{
+	printf "%s\n" "$@" 1>&2
+}
+
+roll_back()
+{
+	set +e
+	if expr "$GOAT_PATH" : '/tmp/goat-test-*' 1>/dev/null &&
+	    [ -d "$GOAT_PATH" ]
+	then
+		rm -fr -- "$GOAT_PATH"
+	else
+		err "Unable to remove the temporary directory '$GOAT_PATH'"
+	fi
+}
+
+trap roll_back EXIT
+
+goat="$PWD/goat"
+export GOAT_PATH="${GOAT_PATH:-"/tmp/goat-test-$$-$(date +%Y-%m-%d-%H-%M-%S)"}"
+libgoat="$PWD/libgoat.sh"
+
+. "$libgoat"
+
+mkdir -p "$GOAT_PATH/uno/dos/tres"
+"$goat" link one "$GOAT_PATH/uno"
+"$goat" link two "$GOAT_PATH/uno/dos"
+"$goat" link three "$GOAT_PATH/uno/dos/tres"
+command cd "$GOAT_PATH"
+"$goat" 1 uno
+command cd uno/dos/tres
+"$goat" 2 ..
+"$goat" 3 .
+cd one && [ x"$PWD" = x"$GOAT_PATH/uno" ]
+cd two && [ x"$PWD" = x"$GOAT_PATH/uno/dos" ]
+cd three && [ x"$PWD" = x"$GOAT_PATH/uno/dos/tres" ]
+( cd "$GOAT_PATH" && cd 1 && [ x"$PWD" = x"$GOAT_PATH/uno" ] )
+( cd "$GOAT_PATH" && cd 2 && [ x"$PWD" = x"$GOAT_PATH/uno/dos" ] )
+( cd "$GOAT_PATH" && cd 3 && [ x"$PWD" = x"$GOAT_PATH/uno/dos/tres" ] )
+( cd "$GOAT_PATH/uno/dos/tres" && cd ... && [ x"$PWD" = x"$GOAT_PATH/uno" ] )
+( cd "$GOAT_PATH/uno/dos/tres" && cd .... && [ x"$PWD" = x"$GOAT_PATH" ] )
+command cd "$GOAT_PATH"
+"$goat" drei "$GOAT_PATH/uno/dos/tres"
+"$goat" list | grep drei 1>/dev/null
+rmdir "$GOAT_PATH/uno/dos/tres"
+"$goat" fix
+"$goat" list | grep -v drei 1>/dev/null
+"$goat" delete 3
+"$goat" list | grep -v 3 1>/dev/null
+"$goat" nuke
+"$goat" list | grep -v uno 1>/dev/null
+
+echo OK
+
+# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab
