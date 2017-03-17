@@ -63,10 +63,13 @@ fix()
 {
 	for link in "$GOAT_PATH/"*
 	do
+		(
+		set +e
 		if ! command cd -- "$link" 1>&2 2>/dev/null
 		then
 			delete "$link"
 		fi
+		)
 	done
 }
 
@@ -83,7 +86,11 @@ nuke()
 
 link()
 {
-	targetpath="$(CDPATH= command cd -- "$2" && pwd -P 2>/dev/null || pwd)"
+	targetpath="$(
+		CDPATH= command cd -- "$2" 2>/dev/null && \
+		pwd -P 2>/dev/null || \
+		pwd
+	)"
 	if [ -L "$GOAT_PATH/$1" ]
 	then
 		rm "$GOAT_PATH/$1"
@@ -98,7 +105,6 @@ then
 	exit 0
 fi
 
-trap usage EXIT
 case "$#" in
 	1)
 		case "$1" in
@@ -136,6 +142,5 @@ case "$#" in
 		esac
 		;;
 esac
-trap - EXIT
 
 # vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

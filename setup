@@ -3,7 +3,7 @@
 # setup - A simple script for automatic installation of goat.
 #
 
-set -eu
+set -eux
 
 # Configuration.
 default_goat_path="$HOME/.goat"
@@ -12,7 +12,7 @@ destdir="$HOME/bin"
 goat="$PWD/goat"
 libgoat="$PWD/libgoat.sh"
 shellrc="$HOME/.bashrc"
-tmpshellrc="$PWD/$(dirname -- "$shellrc")"
+tmpshellrc="$PWD/$(basename -- "$shellrc").tmp"
 
 errxit()
 {
@@ -65,14 +65,16 @@ do
 done
 
 mkdir -p "$destdir"
-cp "$goat" "$libgoat" "$destdir"
+mkdir -p "$GOAT_PATH"
+cp "$goat" "$destdir"
+cp "$libgoat" "$GOAT_PATH"
 
 if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 1>&2 2>/dev/null
 then
 	cp "$shellrc" "$tmpshellrc"
 	if [ x"$default_goat_path" != x"$GOAT_PATH" ]
 	then
-		printf 'export GOAT_PATH=%s\n' "$GOAT_PATH" >> "$tmpshellrc"
+		printf 'export GOAT_PATH="%s"\n' "$GOAT_PATH" >> "$tmpshellrc"
 	fi
 	cat <<EOF >>"$tmpshellrc"
 # Added by goat (https://github.com/0mp/goat)

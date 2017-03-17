@@ -6,7 +6,7 @@
 # GOAT_PATH= ./test
 #
 
-set -eu
+set -eux
 
 err()
 {
@@ -21,7 +21,7 @@ roll_back()
 	then
 		rm -fr -- "$GOAT_PATH"
 	else
-		err "Unable to remove the temporary directory '$GOAT_PATH'"
+		err "Skipping the removal of '$GOAT_PATH'"
 	fi
 }
 
@@ -42,22 +42,22 @@ command cd "$GOAT_PATH"
 command cd uno/dos/tres
 "$goat" 2 ..
 "$goat" 3 .
-cd one && [ x"$PWD" = x"$GOAT_PATH/uno" ]
-cd two && [ x"$PWD" = x"$GOAT_PATH/uno/dos" ]
-cd three && [ x"$PWD" = x"$GOAT_PATH/uno/dos/tres" ]
-( cd "$GOAT_PATH" && cd 1 && [ x"$PWD" = x"$GOAT_PATH/uno" ] )
-( cd "$GOAT_PATH" && cd 2 && [ x"$PWD" = x"$GOAT_PATH/uno/dos" ] )
-( cd "$GOAT_PATH" && cd 3 && [ x"$PWD" = x"$GOAT_PATH/uno/dos/tres" ] )
-( cd "$GOAT_PATH/uno/dos/tres" && cd ... && [ x"$PWD" = x"$GOAT_PATH/uno" ] )
-( cd "$GOAT_PATH/uno/dos/tres" && cd .... && [ x"$PWD" = x"$GOAT_PATH" ] )
+cd one && [ x"${PWD##/*/}" = xuno ]
+cd two && [ x"${PWD##/*/}" = xdos ]
+cd three && [ x"${PWD##/*/}" = xtres ]
+( command cd "$GOAT_PATH" && cd 1 && [ x"${PWD##/*/}" = xuno ] )
+( command cd "$GOAT_PATH" && cd 2 && [ x"${PWD##/*/}" = xdos ] )
+( command cd "$GOAT_PATH" && cd 3 && [ x"${PWD##/*/}" = xtres ] )
+( command cd "$GOAT_PATH/uno/dos/tres" && cd ... && [ x"${PWD##/*/}" = xuno ] )
+( command cd "$GOAT_PATH/uno/dos/tres" && cd .... && \
+	[ x"${PWD##/*/}" = x"${GOAT_PATH##/*/}" ] )
 command cd "$GOAT_PATH"
 "$goat" drei "$GOAT_PATH/uno/dos/tres"
 "$goat" list | grep drei 1>/dev/null
 rmdir "$GOAT_PATH/uno/dos/tres"
+"$goat" drei "$GOAT_PATH/uno/dos/tres" || :
 "$goat" fix
 "$goat" list | grep -v drei 1>/dev/null
-"$goat" delete 3
-"$goat" list | grep -v 3 1>/dev/null
 "$goat" nuke
 "$goat" list | grep -v uno 1>/dev/null
 
