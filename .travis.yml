@@ -16,10 +16,10 @@ before_install:
 
 script:
     - ./lint
-    - GOAT_PATH= ./test
+    - PATH="$PATH:." GOAT_PATH= ./test
     - ./setup
     - . ~/.bashrc
-    - GOAT_PATH=~/.goat ./test
+    - PATH="$PATH:." GOAT_PATH=~/.goat ./test
 
 os:
   - linux
