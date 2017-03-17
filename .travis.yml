@@ -15,11 +15,11 @@ before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install shellcheck checkbashisms; fi
 
 script:
-    - ./lint
+    - PATH="$PATH:." ./lint
     - PATH="$PATH:." GOAT_PATH= ./test
-    - ./setup
+    - ./setup -d "$PWD/.goat"
     - . ~/.bashrc
-    - PATH="$PATH:." GOAT_PATH=~/.goat ./test
+    - PATH="$PATH:." GOAT_PATH="$PWD/.goat" ./test
 
 os:
   - linux
