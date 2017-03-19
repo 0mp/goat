@@ -131,6 +131,17 @@ link()
 	ln -fs -- "$targetpath" "$GOAT_PATH/$1"
 }
 
+list()
+{
+
+	find "$GOAT_PATH" -type l -exec sh -c '
+	for link do
+		dest="$(cd -P -- "$link" && pwd)"
+		printf "%s\t->\t%s\n" "${link##/*/}" "$dest"
+	done
+	' sh {} + | sort
+}
+
 if [ $# -eq 0 ]
 then
 	usage
@@ -147,7 +158,7 @@ case "$#" in
 				usage
 				;;
 			l*)
-				ls -Al -- "$GOAT_PATH"
+				list
 				;;
 			nuke)
 				nuke
