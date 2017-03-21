@@ -39,7 +39,7 @@ err()
 	printf "%s\n" "$@" 1>&2
 }
 
-roll_back()
+clean_up()
 {
 
 	set +e
@@ -52,7 +52,36 @@ roll_back()
 	fi
 }
 
-trap roll_back EXIT
+set_up()
+{
+
+	mkdir -p "$GOAT_PATH/uno/dos/tres"
+	command cd "$GOAT_PATH"
+	"$goat" link one "$GOAT_PATH/uno"
+	"$goat" link two "$GOAT_PATH/uno/dos"
+	"$goat" link three "$GOAT_PATH/uno/dos/tres"
+	"$goat" 1 uno
+	command cd uno/dos/tres
+	"$goat" 2 ..
+	"$goat" 3 .
+	command cd "$GOAT_PATH"
+	"$goat" drei "$GOAT_PATH/uno/dos/tres"
+}
+
+test_case()
+{
+	oldpwd="$PWD"
+	srcpwd="$1"
+	link="$2"
+	destdir="$3"
+
+	command cd "$srcpwd"
+	cd "$link"
+	test x"${PWD##/*/}" = x"$destdir"
+	command cd "$oldpwd"
+}
+
+trap clean_up EXIT
 
 goat="$PWD/goat"
 export GOAT_PATH="${GOAT_PATH:-"/tmp/goat-test-$$-$(date +%Y-%m-%d-%H-%M-%S)"}"
@@ -60,33 +89,24 @@ libgoat="$PWD/libgoat.sh"
 
 . "$libgoat"
 
-mkdir -p "$GOAT_PATH/uno/dos/tres"
-"$goat" link one "$GOAT_PATH/uno"
-"$goat" link two "$GOAT_PATH/uno/dos"
-"$goat" link three "$GOAT_PATH/uno/dos/tres"
-command cd "$GOAT_PATH"
-"$goat" 1 uno
-command cd uno/dos/tres
-"$goat" 2 ..
-"$goat" 3 .
-cd one && [ x"${PWD##/*/}" = xuno ]
-cd two && [ x"${PWD##/*/}" = xdos ]
-cd three && [ x"${PWD##/*/}" = xtres ]
-( command cd "$GOAT_PATH" && cd 1 && [ x"${PWD##/*/}" = xuno ] )
-( command cd "$GOAT_PATH" && cd 2 && [ x"${PWD##/*/}" = xdos ] )
-( command cd "$GOAT_PATH" && cd 3 && [ x"${PWD##/*/}" = xtres ] )
-( command cd "$GOAT_PATH/uno/dos/tres" && cd ... && [ x"${PWD##/*/}" = xuno ] )
-( command cd "$GOAT_PATH/uno/dos/tres" && cd .... && \
-	[ x"${PWD##/*/}" = x"${GOAT_PATH##/*/}" ] )
-command cd "$GOAT_PATH"
-"$goat" drei "$GOAT_PATH/uno/dos/tres"
+set_up
+
+test_case "$PWD" "one" "uno"
+test_case "$PWD/uno" "two" "dos"
+test_case "$PWD/uno/dos" "three" "tres"
+test_case "$GOAT_PATH" "1" "uno"
+test_case "$GOAT_PATH" "2" "dos"
+test_case "$GOAT_PATH" "3" "tres"
+test_case "$GOAT_PATH/uno/dos/tres" "..." "uno"
+test_case "$GOAT_PATH/uno/dos/tres" "...." "$(basename -- "$GOAT_PATH")"
+
 "$goat" list | grep drei 1>/dev/null
 rmdir "$GOAT_PATH/uno/dos/tres"
 "$goat" drei "$GOAT_PATH/uno/dos/tres" || :
 "$goat" fix
 "$goat" list | grep -v drei 1>/dev/null
 "$goat" nuke
-"$goat" list | grep -v uno 1>/dev/null
+test x = x"$("$goat" list)"
 
 echo OK
 
