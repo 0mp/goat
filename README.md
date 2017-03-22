@@ -49,7 +49,7 @@ cd goat
 . ~/.bashrc
 ```
 
-See `./setup --help` for setup options.
+See `./setup --help` for advanced options.
 
 ## Usage overview
 
@@ -57,34 +57,30 @@ See `./setup --help` for setup options.
 # Create a link (h4xdir) to a directory:
 goat h4xdir ~/Documents/dev
 
-# Follow the link to change the directory:
+# Follow a link to change a directory:
 cd h4xdir
 
-# Go up the filesystem tree with '...' instead of '../../':
+# Follow a link (and don't stop there!):
+cd h3xdir/awesome-project
+
+# Go up the filesystem tree with '...' (same as `cd ../../`):
 cd ...
 
-# List all your saved shortcuts:
+# List all your links:
 goat list
 
-# Delete an absolute shortcut from your saved shortcuts:
+# Delete a link:
 goat delete h4xdir
 
-# Delete all saved shortcuts:
+# Delete all saved links:
 goat nuke
+
+# Delete broken links:
+goat fix
 
 # Print the help message:
 goat help
 ```
-
-## Configuration
-
-You might wish to tinker with the `setup` in order to customize the installation
-parameters. To install `goat` you've got to:
-
-- Put `goat` in a directory in your `$PATH`.
-- Add a custom `cd` function from the `setup` file to your shell rc file.
-- Make sure that `goat` stores the links in a place you want by setting
-  `$GOAT_PATH` in `goat`.
 
 ## Development
 
@@ -99,7 +95,7 @@ GOAT_PATH= ./test
 
 ## License
 
-Licensed under MIT license. Copyright &#169; 2016, 2017 Mateusz Piotrowski
+Licensed under BSD license. Copyright &#169; 2016, 2017 Mateusz Piotrowski
 
 [posix_me_harder]: http://wiki.wlug.org.nz/POSIX_ME_HARDER
 [posixly_correct]: http://wiki.wlug.org.nz/POSIXLY_CORRECT
