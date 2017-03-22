@@ -11,7 +11,7 @@
 [ ~/Pictures ] $ ls # see that there is no ~/Pictures/dev directory here
 seahorses wallpapers
 [ ~/Pictures ] $ cd dev # the goat framework's got you covered!
-[ ~/Documents/dev ] $
+[ ~/Documents/devel ] $
 ```
 
 ### Overview
