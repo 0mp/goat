@@ -17,11 +17,10 @@ seahorses wallpapers
 ### Overview
 
 > Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
-> **real ninjas**.
-> #shortcutmanagment #[posix\_me\_harder][posix_me_harder]<BR>
-> \#[posixly\_correct][posixly_correct]
+> **real ninjas**.<br>
+> #[posix\_me\_harder][posix_me_harder] #[posixly\_correct][posixly_correct]
 >
-> _~ 0mp, again_
+> _~ 0mp_
 
 Sometimes you jump around your filesystem tree a lot and you end up putting a
 couple of ugly aliases into your shell's rc file.
