@@ -1,0 +1,113 @@
+#! /bin/sh -
+#
+# test - Test suite for goat.
+#
+# Usage: GOAT_PATH= ./test
+#
+# ---
+#
+# Copyright (c) 2017 Mateusz Piotrowski <mpp302@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+
+set -eu
+
+err()
+{
+
+	printf "%s\n" "$@" 1>&2
+}
+
+clean_up()
+{
+
+	set +e
+	if expr "$GOAT_PATH" : '/tmp/goat-test-*' 1>/dev/null &&
+	    [ -d "$GOAT_PATH" ]
+	then
+		rm -fr -- "$GOAT_PATH"
+	else
+		err "Skipping the removal of '$GOAT_PATH'"
+	fi
+}
+
+set_up()
+{
+
+	mkdir -p "$GOAT_PATH/uno/dos/tres"
+	command cd "$GOAT_PATH"
+	"$goat" link one "$GOAT_PATH/uno"
+	"$goat" link two "$GOAT_PATH/uno/dos"
+	"$goat" link three "$GOAT_PATH/uno/dos/tres"
+	"$goat" 1 uno
+	command cd uno/dos/tres
+	"$goat" 2 ..
+	"$goat" 3 .
+	command cd "$GOAT_PATH"
+	"$goat" drei "$GOAT_PATH/uno/dos/tres"
+}
+
+test_case()
+{
+	oldpwd="$PWD"
+	srcpwd="$1"
+	link="$2"
+	destdir="$3"
+
+	command cd "$srcpwd"
+	cd "$link"
+	test x"${PWD##/*/}" = x"$destdir"
+	command cd "$oldpwd"
+}
+
+trap clean_up EXIT
+
+goat="$PWD/goat"
+export GOAT_PATH="${GOAT_PATH:-"/tmp/goat-test-$$-$(date +%Y-%m-%d-%H-%M-%S)"}"
+libgoat="$PWD/libgoat.sh"
+
+. "$libgoat"
+
+set_up
+
+test_case "$PWD" "one" "uno"
+test_case "$PWD/uno" "two" "dos"
+test_case "$PWD/uno/dos" "three" "tres"
+test_case "$GOAT_PATH" "1" "uno"
+test_case "$GOAT_PATH" "2" "dos"
+test_case "$GOAT_PATH" "3" "tres"
+test_case "$GOAT_PATH/uno/dos/tres" "..." "uno"
+test_case "$GOAT_PATH/uno/dos/tres" "...." "$(basename -- "$GOAT_PATH")"
+
+"$goat" list | grep drei 1>/dev/null
+rmdir "$GOAT_PATH/uno/dos/tres"
+"$goat" drei "$GOAT_PATH/uno/dos/tres" || :
+"$goat" fix
+"$goat" list | grep -v drei 1>/dev/null
+"$goat" nuke
+test x = x"$("$goat" list)"
+
+echo OK
+
+# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

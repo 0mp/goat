@@ -1,12 +1,8 @@
-#! /bin/sh -
-#
-# lint - Test POSIX complience and quality with checkbashisms and shellcheck.
-#
-# Usage: ./lint
+# libgoat.sh - A library to source to enable goat links when using cd.
 #
 # ---
 #
-# Copyright (c) 2016, 2017 Mateusz Piotrowski <mpp302@gmail.com>
+# Copyright (c) 2017 Mateusz Piotrowski <mpp302@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,15 +27,34 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-files="./goat ./setup ./lint ./libgoat.sh"
-exitstatus='0'
+GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
-for file in $files
-do
-	shellcheck -e SC1007,SC2015 --shell=sh "$file" || exitstatus='1'
-	checkbashisms -npfx "$file" || exitstatus='1'
-done
+cd()
+{
 
-exit "$exitstatus"
+	if [ $# -eq 0 ]
+	then
+		command cd
+	elif [ $# -gt 1 ]
+	then
+		command cd "$@"
+	elif [ x"$(printf '%s' "$1" | tr -d '.')" = x ]
+	then
+		if [ x"$1" = x. ] || [ x"$1" = x.. ]
+		then
+			command cd "$1"
+		else
+			set -- "${1##\.\.\.}" "../../"
+			while [ x"$1" != x ]
+			do
+				set -- "${1##\.}" "$2../"
+			done
+			command cd "$2"
+		fi
+	else
+		CDPATH="${CDPATH:-.}:$GOAT_PATH" \
+		    command cd -P -- "$1" 1>/dev/null
+	fi
+}
 
 # vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

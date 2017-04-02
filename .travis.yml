@@ -1,6 +1,5 @@
 language: shell
 
-#sudo: false
 sudo: required
 
 addons:
@@ -11,15 +10,27 @@ addons:
     - shellcheck
 
 before_install:
-    # - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
-    # - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install devscripts; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo curl 'https://anonscm.debian.org/cgit/collab-maint/devscripts.git/plain/scripts/checkbashisms.pl' > checkbashisms; chmod u+x checkbashisms; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install shellcheck checkbashisms; fi
+    - mkdir "$HOME/bin"
+    - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        dlurl='https://anonscm.debian.org/cgit/collab-maint/devscripts.git/plain/scripts/checkbashisms.pl'
+        sudo curl "$dlurl" > "$HOME/checkbashisms"
+        chmod u+x "$HOME/checkbashisms"
+        mv "$HOME/checkbashisms" "$HOME/bin"
+      fi
+    - |
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        brew update
+        brew install shellcheck checkbashisms
+      fi
 
 script:
-    - cd test && sh test.sh; cd ..
-    - export PATH="$PATH:."; ./goatherd target && ./lint && ./goatherd clean
+    - export PATH="$PATH:~/bin"
+    - ./lint
+    - GOAT_PATH= ./test
+    - ./setup -d "$HOME/bin" -p "$HOME/.goat"
+    - . ~/.bashrc
+    - GOAT_PATH="$PWD/.goat" ./test
 
 os:
   - linux

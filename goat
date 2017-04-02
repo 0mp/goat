@@ -1,0 +1,189 @@
+#! /bin/sh -
+#
+# goat - A POSIX-compliant shell movement boosting hack for real ninjas.
+#
+#        This script is a configuration tool for the lightweight framework
+#        capable of organizing shortcuts for the `cd` shell built-in.
+#
+# ---
+#
+# Copyright (c) 2016, 2017 Mateusz Piotrowski <mpp302@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHORS AND CONTRIBUTORS ``AS IS'' AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+
+set -eu
+
+GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
+
+program=goat
+version=2.0.0
+
+usage()
+{
+
+	cat <<-EOF
+Usage: $program [COMMAND]
+Commands:
+    delete LINK
+        Delete a link from \$GOAT_PATH.
+
+    fix
+        Remove broken links.
+
+    help
+        Show help.
+
+    link LINK DEST
+        Create a symbolic link between \$GOAT_PATH/LINK and DEST. The link
+        keyword is usually optional, i.e., '$program LINK DEST' is sufficient
+        if it doesn't conflict with other goat commands. The link is created
+        for the absolute path of the DEST directory.
+
+    list
+        Show a list of all shortcuts.
+
+    nuke
+        Delete all the links.
+
+    version
+        Show version.
+EOF
+}
+
+errxit()
+{
+
+	printf "error: %s\n" "$*"
+	trap - EXIT
+	exit 1
+}
+
+delete()
+{
+
+	if [ -L "$1" ]
+	then
+		rm -- "$1"
+	fi
+}
+
+fix()
+{
+
+	for link in "$GOAT_PATH/"*
+	do
+		(
+		set +e
+		if ! command cd -- "$link" 1>&2 2>/dev/null
+		then
+			delete "$link"
+		fi
+		)
+	done
+}
+
+nuke()
+{
+
+	for link in "$GOAT_PATH/"*
+	do
+		if [ -L "$link" ]
+		then
+			delete "$link"
+		fi
+	done
+}
+
+link()
+{
+
+	targetpath="$(
+		CDPATH= command cd -- "$2" 2>/dev/null && \
+		pwd -P 2>/dev/null || \
+		pwd
+	)"
+	if [ -L "$GOAT_PATH/$1" ]
+	then
+		rm "$GOAT_PATH/$1"
+	fi
+
+	ln -fs -- "$targetpath" "$GOAT_PATH/$1"
+}
+
+list()
+{
+
+	find "$GOAT_PATH" -type l -exec sh -c '
+	for link do
+		dest="$(cd -P -- "$link" && pwd)"
+		printf "%s\t->\t%s\n" "${link##/*/}" "$dest"
+	done
+	' sh {} + | sort
+}
+
+if [ $# -eq 0 ]
+then
+	usage
+	exit 0
+fi
+
+case "$#" in
+	1)
+		case "$1" in
+			f*)
+				fix
+				;;
+			-h|--help|h*)
+				usage
+				;;
+			l*)
+				list
+				;;
+			nuke)
+				nuke
+				;;
+			--version|v*)
+				printf "%s\n" "$version"
+				;;
+			*)
+				errxit "'$1' is an invalid command"
+				;;
+		esac
+		;;
+	*)
+		case "$1" in
+			delete)
+				delete "$GOAT_PATH/$2"
+				;;
+			link)
+				link "$2" "$3"
+				;;
+			*)
+				link "$1" "$2"
+				;;
+		esac
+		;;
+esac
+
+# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab
