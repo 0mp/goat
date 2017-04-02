@@ -17,7 +17,8 @@ seahorses wallpapers
 ### Overview
 
 > Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
-> **real ninjas**. #shortcutmanagment #[posix\_me\_harder][posix_me_harder]
+> **real ninjas**.  
+> #shortcutmanagment #[posix\_me\_harder][posix_me_harder]
 > \#[posixly\_correct][posixly_correct]
 >
 > _~ 0mp, again_
