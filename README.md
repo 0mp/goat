@@ -17,8 +17,8 @@ seahorses wallpapers
 ### Overview
 
 > Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
-> **real ninjas**.  
-> #shortcutmanagment #[posix\_me\_harder][posix_me_harder]
+> **real ninjas**.
+> #shortcutmanagment #[posix\_me\_harder][posix_me_harder]<BR>
 > \#[posixly\_correct][posixly_correct]
 >
 > _~ 0mp, again_
@@ -62,7 +62,7 @@ goat h4xdir ~/Documents/dev
 cd h4xdir
 
 # Follow a link (and don't stop there!):
-cd h3xdir/awesome-project
+cd h4xdir/awesome-project
 
 # Go up the filesystem tree with '...' (same as `cd ../../`):
 cd ...
