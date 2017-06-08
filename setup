@@ -99,6 +99,7 @@ cp "$libgoat" "$GOAT_PATH"
 
 if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 1>&2 2>/dev/null
 then
+	touch "$shellrc"
 	cp "$shellrc" "$tmpshellrc"
 	if [ x"$default_goat_path" != x"$GOAT_PATH" ]
 	then
