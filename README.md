@@ -44,7 +44,7 @@ With goat you can easily manage your ninja shortcuts - just type `goat p
 git clone https://github.com/0mp/goat
 cd goat
 ./setup
-# Consider running `printf "%s\n" 'PATH:~/bin:$PATH' >> ~/.bashrc`
+# Consider running `printf "%s\n" '~/bin:$PATH' >> ~/.bashrc`
 # if ~/bin isn't already in your $PATH.
 . ~/.bashrc
 ```
