@@ -37,7 +37,7 @@ set -eu
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
 program=goat
-version=2.0.0
+version=2.1.0
 
 usage()
 {
@@ -45,7 +45,7 @@ usage()
 	cat <<-EOF
 Usage: $program [COMMAND]
 Commands:
-    delete LINK
+    delete [LINK]...
         Delete a link from \$GOAT_PATH.
 
     fix
@@ -82,10 +82,13 @@ errxit()
 delete()
 {
 
-	if [ -L "$1" ]
-	then
-		rm -- "$1"
-	fi
+	for link in "$@"
+	do
+		if [ -L "$GOAT_PATH/$link" ]
+		then
+			rm -- "$GOAT_PATH/$link"
+		fi
+	done
 }
 
 fix()
@@ -97,7 +100,7 @@ fix()
 		set +e
 		if ! command cd -- "$link" 1>&2 2>/dev/null
 		then
-			delete "$link"
+			delete "${link##"$GOAT_PATH/"}"
 		fi
 		)
 	done
@@ -110,7 +113,7 @@ nuke()
 	do
 		if [ -L "$link" ]
 		then
-			delete "$link"
+			delete "${link##"$GOAT_PATH/"}"
 		fi
 	done
 }
@@ -174,7 +177,8 @@ case "$#" in
 	*)
 		case "$1" in
 			delete)
-				delete "$GOAT_PATH/$2"
+				shift
+				delete "$@"
 				;;
 			link)
 				link "$2" "$3"

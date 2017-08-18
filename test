@@ -108,6 +108,12 @@ rmdir "$GOAT_PATH/uno/dos/tres"
 "$goat" nuke
 test x = x"$("$goat" list)"
 
+# Test `goat delete` for more than 1 argument.
+set_up
+"$goat" delete one three
+"$goat" list | grep -v one 1>/dev/null
+"$goat" list | grep -v three 1>/dev/null
+
 echo OK
 
 # vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab
