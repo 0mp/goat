@@ -90,7 +90,7 @@ See `CONTRIBUTING.md`.
 
 ```sh
 ./lint
-GOAT_PATH= ./test
+./test
 ```
 
 ## License

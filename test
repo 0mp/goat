@@ -2,7 +2,7 @@
 #
 # test - Test suite for goat.
 #
-# Usage: GOAT_PATH= ./test
+# Usage: ./test
 #
 # ---
 #
@@ -84,7 +84,7 @@ test_case()
 trap clean_up EXIT
 
 goat="$PWD/goat"
-export GOAT_PATH="${GOAT_PATH:-"/tmp/goat-test-$$-$(date +%Y-%m-%d-%H-%M-%S)"}"
+export GOAT_PATH="${TEST_PATH:-"/tmp/goat-test-$$-$(date +%Y-%m-%d-%H-%M-%S)"}"
 libgoat="$PWD/libgoat.sh"
 
 . "$libgoat"

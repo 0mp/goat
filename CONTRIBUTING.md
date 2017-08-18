@@ -8,10 +8,8 @@
 
 ## Testing
 
-Set `$GOAT_PATH` to nothing in order to create a testing environment.
-
 ```sh
-GOAT_PATH= ./test
+./test
 ```
 
 # Style
