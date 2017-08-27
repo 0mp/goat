@@ -69,8 +69,8 @@ cd ...
 # List all your links:
 goat list
 
-# Delete a link:
-goat delete h4xdir
+# Delete a link (or more):
+goat delete h4xdir lojban
 
 # Delete all saved links:
 goat nuke
