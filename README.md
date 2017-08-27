@@ -72,6 +72,9 @@ goat list
 # Delete a link (or more):
 goat delete h4xdir lojban
 
+# Delete all the links which point to directories with the given prefix:
+goat deleteprefix $HOME/Documents
+
 # Delete all saved links:
 goat nuke
 

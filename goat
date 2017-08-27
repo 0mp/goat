@@ -37,7 +37,7 @@ set -eu
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
 program=goat
-version=2.1.0
+version=2.2.0
 
 usage()
 {
@@ -47,6 +47,9 @@ Usage: $program [COMMAND]
 Commands:
     delete [LINK]...
         Delete a link from \$GOAT_PATH.
+
+    deleteprefix [PREFIX]
+        Delete all the links pointing to directories with the given prefix.
 
     fix
         Remove broken links.
@@ -91,6 +94,23 @@ delete()
 	done
 }
 
+deleteprefix()
+{
+	prefix="$1"
+
+	for link in "$GOAT_PATH/"*
+	do
+		if [ -L "$link" ]
+		then
+			command cd -P -- "$link" || continue
+			if [ "${PWD##"$prefix"}" != "$PWD" ]
+			then
+				delete "${link##"$GOAT_PATH/"}"
+			fi
+		fi
+	done
+}
+
 fix()
 {
 
@@ -98,7 +118,7 @@ fix()
 	do
 		(
 		set +e
-		if ! command cd -- "$link" 1>&2 2>/dev/null
+		if ! command cd -- "$link" 2>/dev/null 1>&2
 		then
 			delete "${link##"$GOAT_PATH/"}"
 		fi
@@ -179,6 +199,10 @@ case "$#" in
 			delete)
 				shift
 				delete "$@"
+				;;
+			deleteprefix)
+				shift
+				deleteprefix "$1"
 				;;
 			link)
 				link "$2" "$3"
