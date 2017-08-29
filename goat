@@ -37,7 +37,7 @@ set -eu
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
 program=goat
-version=2.2.0
+version=2.3.0
 
 usage()
 {
@@ -61,7 +61,7 @@ Commands:
         Create a symbolic link between \$GOAT_PATH/LINK and DEST. The link
         keyword is usually optional, i.e., '$program LINK DEST' is sufficient
         if it doesn't conflict with other goat commands. The link is created
-        for the absolute path of the DEST directory.
+        for the absolute path of the DEST directory. Always succeeds.
 
     list
         Show a list of all shortcuts.
@@ -142,9 +142,10 @@ link()
 {
 
 	targetpath="$(
-		CDPATH= command cd -- "$2" 2>/dev/null && \
-		pwd -P 2>/dev/null || \
-		pwd
+		if CDPATH= command cd -- "$2" 2>/dev/null
+		then
+			pwd -P 2>/dev/null || pwd
+		fi
 	)"
 	if [ -L "$GOAT_PATH/$1" ]
 	then

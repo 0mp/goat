@@ -116,9 +116,9 @@ set_up
 
 # Test `goat deleteprefix`.
 set_up
-"$goat" link three2 "$GOAT_PATH/uno/dos/tres2"
-"$goat" link three3 "$GOAT_PATH/uno/dos/tres3"
-"$goat" link three4 "$GOAT_PATH/uno/dos/tres4"
+"$goat" link three2 "$GOAT_PATH/uno/dos/tres"
+"$goat" link three3 "$GOAT_PATH/uno/dos/tres"
+"$goat" link three4 "$GOAT_PATH/uno/dos/tres"
 "$goat" deleteprefix "$GOAT_PATH/uno/dos"
 "$goat" list | grep -v two 1>/dev/null
 "$goat" list | grep -v three 1>/dev/null
