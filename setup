@@ -112,7 +112,7 @@ then
 EOF
 	mv "$tmpshellrc" "$shellrc"
 else
-	printf "Nothing has been added to %s it is already properly set up\n" \
+	printf '%s left unchanged (it looks like it is already configured)\n' \
 	    "$shellrc"
 fi
 
