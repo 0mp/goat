@@ -106,6 +106,7 @@ then
 		printf 'export GOAT_PATH="%s"\n' "$GOAT_PATH" >> "$tmpshellrc"
 	fi
 	cat <<EOF >>"$tmpshellrc"
+
 # Added by goat (https://github.com/0mp/goat)
 . $GOAT_PATH/libgoat.sh
 EOF
