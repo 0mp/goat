@@ -97,7 +97,7 @@ mkdir -p "$GOAT_PATH"
 cp "$goat" "$destdir"
 cp "$libgoat" "$GOAT_PATH"
 
-if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 1>&2 2>/dev/null
+if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 2>/dev/null 1>&2
 then
 	touch "$shellrc"
 	cp "$shellrc" "$tmpshellrc"
