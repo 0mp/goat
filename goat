@@ -33,11 +33,12 @@
 # SUCH DAMAGE.
 
 set -eu
+[ -n "${DEBUG:-}" ] && set -x
 
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
 program=goat
-version=2.3.0
+version=2.3.1
 
 usage()
 {
