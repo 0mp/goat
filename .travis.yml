@@ -27,10 +27,10 @@ before_install:
 script:
     - export PATH="$PATH:~/bin"
     - ./lint
-    - ./test
+    - DEBUG=1 ./test
     - ./setup -d "$HOME/bin" -p "$HOME/.goat"
     - . ~/.bashrc
-    - TEST_PATH="$PWD/.goat" ./test
+    - DEBUG=1 TEST_PATH="$PWD/.goat" ./test
 
 os:
   - linux

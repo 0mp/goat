@@ -4,6 +4,10 @@
 #
 # Usage: ./test
 #
+# Environmental variables:
+# - GOAT_PATH -- A place where goat should live.
+# - DEBUG -- A non-empty string will result in extra details being printed.
+#
 # ---
 #
 # Copyright (c) 2017 Mateusz Piotrowski <mpp302@gmail.com>
@@ -32,6 +36,7 @@
 # SUCH DAMAGE.
 
 set -eu
+[ -n "${DEBUG:-}" ] && set -x
 
 err()
 {
