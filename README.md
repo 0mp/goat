@@ -20,14 +20,14 @@ seahorses wallpapers
 > **real ninjas**.<br>
 > #[posix\_me\_harder][posix_me_harder] #[posixly\_correct][posixly_correct]
 >
-> _~ 0mp_
+> _~&#32;0mp_
 
 Sometimes you jump around your filesystem tree a lot and you end up putting a
 couple of ugly aliases into your shell's rc file.
 
 > I should try it, even if it is dumb!
 >
-> _~ [dse] at [What the Daily WTF?] about goat v1.1.1_
+> _~&#32;[dse] at [What the Daily WTF?] about goat v1.1.1_
 
 With goat you can easily manage your ninja shortcuts - just type `goat p
 ~/Projects` to introduce a new link and then `cd p` to jump to its destination.
@@ -36,7 +36,7 @@ With goat you can easily manage your ninja shortcuts - just type `goat p
 > waltz with `../` being my miserable dance floor. I'm cloning this goat
 > straight away!
 >
-> _~ YA0mp_
+> _~&#32;YA0mp_
 
 ## Installation
 
