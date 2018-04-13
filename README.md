@@ -98,7 +98,7 @@ See `CONTRIBUTING.md`.
 
 ## License
 
-Licensed under BSD license. Copyright &#169; 2016, 2017 Mateusz Piotrowski
+Licensed under BSD license. Copyright &#169; 2016-2018 Mateusz Piotrowski
 
 [posix_me_harder]: http://wiki.wlug.org.nz/POSIX_ME_HARDER
 [posixly_correct]: http://wiki.wlug.org.nz/POSIXLY_CORRECT
