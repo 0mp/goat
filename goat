@@ -150,7 +150,7 @@ link()
 	)"
 	if [ -L "$GOAT_PATH/$1" ]
 	then
-		rm "$GOAT_PATH/$1"
+		rm -- "$GOAT_PATH/$1"
 	fi
 
 	ln -fs -- "$targetpath" "$GOAT_PATH/$1"
