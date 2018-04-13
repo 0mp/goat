@@ -161,7 +161,7 @@ list()
 
 	find "$GOAT_PATH" -type l -exec sh -c '
 	for link do
-		dest="$(cd -P -- "$link" && pwd)"
+		dest="$(cd -P -- "$link" 2>/dev/null && pwd)"
 		printf "%s\t->\t%s\n" "${link##/*/}" "$dest"
 	done
 	' sh {} + | sort
