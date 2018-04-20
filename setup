@@ -32,6 +32,7 @@
 set -eu
 
 # Configuration.
+bashcompletiondir="$HOME/.bash_completion.d"
 bashcompletionfile="$PWD/goat.bash_completion"
 default_goat_path="$HOME/.goat"
 GOAT_PATH="$default_goat_path"
