@@ -4,13 +4,11 @@ sudo: required
 
 addons:
   apt:
-    sources:
-    - debian-sid
     packages:
     - shellcheck
 
 before_install:
-    - mkdir "$HOME/bin"
+    - mkdir -p "$HOME/bin"
     - |
       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         dlurl='https://anonscm.debian.org/cgit/collab-maint/devscripts.git/plain/scripts/checkbashisms.pl'
