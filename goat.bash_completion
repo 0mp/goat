@@ -1,12 +1,4 @@
-#! /bin/sh -
-#
-# lint - Test POSIX complience and quality with checkbashisms and shellcheck.
-#
-# Usage: ./lint
-#
-# ---
-#
-# Copyright (c) 2016-2018 Mateusz Piotrowski <0mp@FreeBSD.org>
+# Copyright (c) 2018 Mateusz Piotrowski <0mp@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,21 +23,14 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-bashfiles="./goat.bash_completion"
-shfiles="./goat ./setup ./lint ./libgoat.sh"
-exitstatus='0'
-
-for file in $bashfiles
-do
-	shellcheck --shell=bash "$file" || exitstatus='1'
-done
-
-for file in $shfiles
-do
-	shellcheck -e SC1007,SC2015 --shell=sh "$file" || exitstatus='1'
-	checkbashisms -npfx "$file" || exitstatus='1'
-done
-
-exit "$exitstatus"
-
-# vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab
+_goat_cd ()
+{
+    local cur
+    _init_completion || return
+    _cd
+    if [[ "${#COMPREPLY}" -eq 0 && -n $GOAT_PATH ]]; then
+        cur="$GOAT_PATH/$cur";
+        _filedir -d;
+    fi;
+}
+complete -F _goat_cd -o nospace cd pushd

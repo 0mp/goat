@@ -4,7 +4,7 @@
 #
 # ---
 #
-# Copyright (c) 2016, 2017 Mateusz Piotrowski <mpp302@gmail.com>
+# Copyright (c) 2016-2018 Mateusz Piotrowski <0mp@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@
 set -eu
 
 # Configuration.
+bashcompletionfile="$PWD/goat.bash_completion"
 default_goat_path="$HOME/.goat"
 GOAT_PATH="$default_goat_path"
 destdir="$HOME/bin"
@@ -55,6 +56,10 @@ usage()
 Usage: ./setup [-d|-h|-p|-s]
 
 Options:
+    -b, --bash-completion DIR
+        .Set the directory to install Bash completion files in. Disable by
+         setting it to "/dev/null". Default: "$HOME/.bash_completion.d".
+
     -d, --destination DIR
         Set the directory to install the goat script. Remember to make sure that
         this directory is added to your \$PATH. Default: "\$HOME/bin".
@@ -74,6 +79,10 @@ EOF
 while [ $# -gt 0 ]
 do
 	case "$1" in
+		-b|--bash-completion)
+			bashcompletiondir="$2"
+			shift 2
+			;;
 		-d|--destination)
 			destdir="$2"
 			shift 2
@@ -115,5 +124,8 @@ else
 	printf '%s left unchanged (it looks like it is already configured)\n' \
 	    "$shellrc"
 fi
+
+mkdir -p -- "$bashcompletiondir"
+cp -- "$bashcompletionfile" "$bashcompletiondir/goat"
 
 # vim: filetype=sh softtabstop=8 shiftwidth=8 tabstop=8 noexpandtab

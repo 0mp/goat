@@ -37,7 +37,7 @@ set -eu
 
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
-version=2.3.2
+version=2.4.0
 
 usage()
 {

@@ -38,6 +38,8 @@ With goat you can easily manage your ninja shortcuts - just type `goat p
 >
 > _~&#32;YA0mp_
 
+BTW, Bash completion is now fully working with goat's shortcuts.
+
 ## Installation
 
 ```sh
