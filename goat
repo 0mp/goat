@@ -36,7 +36,7 @@ set -eu
 
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
-version=2.4.3
+version=2.5.0
 
 case $(uname -s) in
 	[Mm][Ii][Nn][Gg][Ww]*)
