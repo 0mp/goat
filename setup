@@ -51,6 +51,18 @@ errxit()
 	exit 1
 }
 
+isMinGW()
+{
+	case $(uname -s) in
+		[Mm][Ii][Nn][Gg][Ww]*)
+			true
+			;;
+		*)
+			false
+			;;
+	esac
+}
+
 usage()
 {
 
@@ -111,7 +123,10 @@ mkdir -p "$destdir"
 mkdir -p "$GOAT_PATH"
 cp "$goat" "$destdir"
 cp "$libgoat" "$GOAT_PATH"
-cp "$mingw_ln" "$GOAT_PATH"
+if isMinGW
+then
+	cp "$mingw_ln" "$GOAT_PATH"
+fi
 
 if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 2>/dev/null 1>&2
 then
