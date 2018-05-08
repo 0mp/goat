@@ -38,6 +38,7 @@ GOAT_PATH="$default_goat_path"
 destdir="$HOME/bin"
 goat="$PWD/goat"
 libgoat="$PWD/libgoat.sh"
+mingw_ln="$PWD/mingw_ln.bat"
 shellrc="$HOME/.bashrc"
 tmpshellrc="$PWD/$(basename -- "$shellrc").tmp"
 
@@ -105,6 +106,7 @@ mkdir -p "$destdir"
 mkdir -p "$GOAT_PATH"
 cp "$goat" "$destdir"
 cp "$libgoat" "$GOAT_PATH"
+cp "$mingw_ln" "$GOAT_PATH"
 
 if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 2>/dev/null 1>&2
 then
