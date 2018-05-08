@@ -95,6 +95,10 @@ do
 			GOAT_PATH="$2"
 			shift 2
 			;;
+		-s|--shellrc)
+			shellrc="$2"
+			shift 2
+			;;
 		*)
 			errxit "Unknown option '$1'"
 			;;
