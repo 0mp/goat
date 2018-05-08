@@ -38,6 +38,15 @@ GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
 version=2.4.3
 
+case $(uname -s) in
+	[Mm][Ii][Nn][Gg][Ww]*)
+		LN=mingw_ln
+		;;
+	*)
+		LN=unix_ln
+		;;
+esac
+
 usage()
 {
 
@@ -151,7 +160,21 @@ link()
 		rm -- "$GOAT_PATH/$1"
 	fi
 
-	ln -fs -- "$targetpath" "$GOAT_PATH/$1"
+	$LN "$targetpath" "$GOAT_PATH/$1"
+}
+
+unix_ln()
+{
+	targetpath="$1"
+	destination="$2"
+	ln -fs -- "$targetpath" "$destination"
+}
+
+mingw_ln()
+{
+	targetpath="$1"
+	destination="$2"
+	"$GOAT_PATH/mingw_ln.bat" "$destination" "$targetpath"
 }
 
 list()
