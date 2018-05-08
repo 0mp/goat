@@ -31,16 +31,17 @@
 set -eu
 
 # Configuration.
+workingdir="$(dirname -- "$0")"
 bashcompletiondir="$HOME/.bash_completion.d"
-bashcompletionfile="$PWD/goat.bash_completion"
+bashcompletionfile="$workingdir/goat.bash_completion"
 default_goat_path="$HOME/.goat"
 GOAT_PATH="$default_goat_path"
 destdir="$HOME/bin"
-goat="$PWD/goat"
-libgoat="$PWD/libgoat.sh"
-mingw_ln="$PWD/mingw_ln.bat"
+goat="$workingdir/goat"
+libgoat="$workingdir/libgoat.sh"
+mingw_ln="$workingdir/mingw_ln.bat"
 shellrc="$HOME/.bashrc"
-tmpshellrc="$PWD/$(basename -- "$shellrc").tmp"
+tmpshellrc="$workingdir/$(basename -- "$shellrc").tmp"
 
 errxit()
 {
@@ -66,7 +67,7 @@ usage()
 {
 
 	cat <<EOF
-Usage: ./setup [-d|-h|-p|-s]
+Usage: $0 [-d|-h|-p|-s]
 
 Options:
     -b, --bash-completion DIR
@@ -106,6 +107,10 @@ do
 			;;
 		-p|--path)
 			GOAT_PATH="$2"
+			shift 2
+			;;
+		-s|--shellrc)
+			shellrc="$2"
 			shift 2
 			;;
 		*)
