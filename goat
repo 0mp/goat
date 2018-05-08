@@ -174,12 +174,8 @@ mingw_ln()
 {
 	targetpath="$1"
 	destination="$2"
-	#cmd "$destination" "$targetpath"
 	"$GOAT_PATH/mingw_ln.bat" "$destination" "$targetpath"
-exit
-EOF
 }
-
 
 list()
 {
