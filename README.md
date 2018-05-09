@@ -4,7 +4,12 @@
 [![POSIX Compliance](https://img.shields.io/badge/POSIX-compliant-blue.svg)](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 [![Version](https://img.shields.io/github/release/0mp/goat.svg)](https://github.com/0mp/goat/releases/latest)
 
-### Quick example
+### Overview
+
+> I used to retrieve carefully-constructed `cd` commands from my history. 
+> But then, I got a goat.
+>
+> _~&#32;[Jonathan Paugh][jpaugh] on [Google+]_
 
 ```sh
 [ ~/Pictures ] $ goat dev ~/Documents/devel # create a link to the dev directory
@@ -13,8 +18,6 @@ seahorses wallpapers
 [ ~/Pictures ] $ cd dev # the goat framework's got you covered!
 [ ~/Documents/devel ] $
 ```
-
-### Overview
 
 > Oh my! This is a **POSIX-compliant** shell _movement boosting_ **hack** for
 > **real ninjas**.<br>
@@ -27,7 +30,7 @@ couple of ugly aliases into your shell's rc file.
 
 > I should try it, even if it is dumb!
 >
-> _~&#32;[dse] at [What the Daily WTF?] about goat v1.1.1_
+> _~&#32;[dse] on [What the Daily WTF?] about goat v1.1.1_
 
 With goat you can easily manage your ninja shortcuts - just type `goat p
 ~/Projects` to introduce a new link and then `cd p` to jump to its destination.
@@ -106,3 +109,5 @@ Licensed under BSD license. Copyright &#169; 2016-2018 Mateusz Piotrowski
 [posixly_correct]: http://wiki.wlug.org.nz/POSIXLY_CORRECT
 [dse]: https://what.thedailywtf.com/user/dse
 [What the Daily WTF?]: https://what.thedailywtf.com/topic/16122/quick-links-thread/2121
+[Google+]: https://plus.google.com/113949504369826627206/posts/bqSfYTrQxLN
+[jpaugh]: https://github.com/jpaugh
