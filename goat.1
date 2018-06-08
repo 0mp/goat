@@ -1,0 +1,209 @@
+.\"
+.\" SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+.\"
+.\" Copyright (c) 2018 Mateusz Piotrowski <0mp@FreeBSD.org>
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd June 12, 2018
+.Dt GOAT 1
+.Os
+.Sh NAME
+.Nm goat
+.Nd POSIX-compliant shell movement boosting hack for real ninjas
+.Sh SYNOPSIS
+.Nm
+.Op Ar command Op Ar arg ...
+.Sh DESCRIPTION
+.Nm
+is a utility to manage alias-like shortcuts to be used with
+.Xr cd 1 .
+It redefines the
+.Xr cd 1
+builtin as a shell function to be able to intercept working directory changes.
+.Pp
+The commands are as follows:
+.Bl -tag -width "version"
+.It Cm delete Op Ar shortcut ...
+Delete
+.Ar shortcut
+so that the link between
+.Ar shortcut
+and the associated destination directory is removed.
+.It Cm deleteprefix Ar prefix
+Delete all the shortcuts associated with directories, which start with the
+given
+.Ar prefix .
+.It Cm fix
+Remove shortcuts, which point to non-existing directories.
+.It Cm help
+Show help.
+.It Cm link Ar shortcut Ar destination
+Create a symbolic link between
+.Ar shortcut
+and
+.Ar destination .
+The link is going to be created in the directory pointed by the
+.Ev GOAT_PATH
+environmental variable.
+The
+.Cm link
+keyword is usually optional, i.e.,
+.Dq Li goat shortcut dest
+is sufficient if it doesn't conflict with other
+.Nm
+commands.
+The link is created for the absolute path of the
+.Ar destination
+directory.
+Always succeeds.
+.It Cm list
+Show a list of all shortcuts.
+.It Cm nuke
+Delete all shortcuts.
+.It Cm version
+Show version.
+.El
+.Sh GLOSSARY
+.Bl -tag -width destination
+.It Em destination
+A directory pointed to by a
+.Em shortcut .
+.It Em link
+A relation based on symbolic links between a
+.Em shortcut
+and a
+.Em destination .
+.It Em shortcut
+A symbolic link file stored in
+.Ev GOAT_PATH
+that is associated with a certain
+.Em destination .
+When its name is specified as an argument to
+.Xr cd 1
+it causes
+.Nm
+to change the working directory to the
+.Em destination
+associated with the
+.Em shortcut .
+.El
+.Sh ENVIRONMENT
+.Bl -tag -width "GOAT_PATH" -compact
+.It Ev GOAT_PATH
+The directory where
+.Nm
+shortcuts are stored.
+.El
+.Sh FILES
+.Bl -tag -width libgoat.sh
+.It Pa ~/.goat
+The directory where
+.Pa libgoat.sh
+and shortcuts are stored unless
+.Ev GOAT_PATH
+is set to a different directory.
+.It Pa libgoat.sh
+The file, which redefines the
+.Xr cd 1
+command.
+.El
+.Sh EXAMPLES
+Create a shortcut named
+.Dq f
+to
+.Pa ~/Documents/dev/freebsd
+(no need to use
+.Cm link
+explicitly here):
+.Bd -literal -offset indent
+goat f ~/Documents/dev/freebsd
+.Ed
+.Pp
+Follow a link to change a directory with
+.Xr cd 1 :
+.Bd -literal -offset indent
+cd f
+.Ed
+.Pp
+Take the
+.Dq f
+shortcut and enter its destination subdirectory with just one command:
+.Bd -literal -offset indent
+cd f/ports
+.Ed
+.Pp
+Create a shortcut named
+.Dq p
+to the current directory:
+.Bd -literal -offset indent
+goat p .
+.Ed
+.Pp
+Go up the filesystem tree with
+.Cm ...
+.Po
+same as the standard
+.Dq Li cd ../../
+.Pc :
+.Bd -literal -offset indent
+cd ...
+.Ed
+.Pp
+List all your links:
+.Bd -literal -offset indent
+goat list
+.Ed
+.Pp
+Delete a link (or more):
+.Bd -literal -offset indent
+goat delete f p
+.Ed
+.Pp
+Delete all the links which point to directories with the given prefix:
+.Bd -literal -offset indent
+goat deleteprefix "$HOME/Documents"
+.Ed
+.Sh COMPATIBILITY
+.Nm
+has no known compatibility issues.
+.Pp
+.Nm
+should work just fine with MinGW environments.
+.Sh SEE ALSO
+.Xr cd 1 ,
+.Xr ln 1 ,
+.Xr sh 1
+.Ss Similar software
+.Bl -ohang
+.It Xr autojump 1
+.Lk https://github.com/wting/autojump
+.It Xr fasd 1
+.Lk https://github.com/clvv/fasd
+.It Xr z 1
+.Lk https://github.com/rupa/z/
+.El
+.Sh AUTHORS
+.An Mateusz Piotrowski Aq Mt 0mp@FreeBSD.org
+.Sh BUGS
+Please report bugs at
+.Lk https://github.com/0mp/goat/
