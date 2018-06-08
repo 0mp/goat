@@ -1,0 +1,166 @@
+.\"
+.\" SPDX-License-Identifier: BSD-2-Clause-FreeBSD
+.\"
+.\" Copyright (c) 2018 Mateusz Piotrowski <0mp@FreeBSD.org>
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd May 26, 2018
+.Dt GOAT 1
+.Os
+.Sh NAME
+.Nm goat
+.Nd POSIX-compliant shell movement boosting hack for real ninjas
+.Po aka
+.Dq Li cd x
+and
+.Dq Li cd ...
+.Pc
+.Sh SYNOPSIS
+.Nm
+.Op Ar command
+.Sh DESCRIPTION
+.Nm
+is a utility to manage alias-like shortcuts to be used with
+.Xr cd 1 .
+" TODO: Explain links, destinations and shortcuts.
+" TODO: Add a note about libgoat.
+" TODO: Add a note about cd.
+" TODO: Add a note about shell rc files.
+The commands are as follows:
+.Bl -tag -width "deleteprefix"
+.It Cm delete Ar link ...
+Delete
+.Ar link
+from
+.Ev GOAT_PATH .
+.It Cm deleteprefix Ar prefix
+Delete all the links pointing to directories with the given
+.Ar prefix .
+.It Cm fix
+Remove broken links.
+.It Cm help
+Show help.
+.It Cm link Ar shortcut Ar destination
+Create a symbolic link between
+.Ar shortcut
+and
+.Ar destination .
+The link is going to be created in the directory pointed by the
+.Ev GOAT_PATH
+environmental variable.
+The
+.Cm link
+keyword is usually optional, i.e.,
+.Dq Li goat shortcut dest
+is sufficient if it doesn't conflict with other
+.Nm
+commands.
+The link is created for the absolute path of the
+.Ar destination
+directory.
+Always succeeds.
+.It Cm list
+Show a list of all shortcuts.
+.It Cm nuke
+Delete all the links.
+.It Cm version
+Show version.
+.El
+.Sh ENVIRONMENT
+.Bl -tag -width "GOAT_PATH" -compact
+.It Ev GOAT_PATH
+The directory where
+.Nm
+shortcuts are stored.
+.El
+.Sh EXAMPLES
+Create a shortcut named
+.Dq h4xdir
+to the
+.Pa ~/Documents/dev
+directory:
+.Bd -literal -offset indent
+goat h4xdir ~/Documents/dev
+.Ed
+.Pp
+Follow a link to change a directory with
+.Xr cd 1 :
+.Bd -literal -offset indent
+cd h4xdir
+.Ed
+.Pp
+Follow a link (and don't stop there!):
+.Bd -literal -offset indent
+cd h4xdir/awesome-project
+.Ed
+.Pp
+Go up the filesystem tree with
+.Cm ...
+.Po
+same as
+.Dq Li cd ../../
+.Pc :
+.Bd -literal -offset indent
+cd ...
+.Ed
+.Pp
+List all your links:
+.Bd -literal -offset indent
+goat list
+.Ed
+.Pp
+Delete a link (or more):
+.Bd -literal -offset indent
+goat delete h4xdir lojban
+.Ed
+.Pp
+Delete all the links which point to directories with the given prefix:
+.Bd -literal -offset indent
+goat deleteprefix $HOME/Documents
+.Ed
+.Pp
+Delete all saved links:
+.Bd -literal -offset indent
+goat nuke
+.Ed
+.Pp
+Delete broken links:
+.Bd -literal -offset indent
+goat fix
+.Ed
+.Pp
+Print the help message:
+.Bd -literal -offset indent
+goat help
+.Ed
+.Sh COMPATIBILITY
+.Nm
+has no known compatibility issues.
+.Pp
+.Nm
+should work just fine with MinGW environments.
+.Sh SEE ALSO
+.Xr cd 1 ,
+.Xr sh 1
+.Sh AUTHORS
+.An Mateusz Piotrowski Aq Mt 0mp@FreeBSD.org
