@@ -24,17 +24,12 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd May 26, 2018
+.Dd June 12, 2018
 .Dt GOAT 1
 .Os
 .Sh NAME
 .Nm goat
 .Nd POSIX-compliant shell movement boosting hack for real ninjas
-.Po aka
-.Dq Li cd x
-and
-.Dq Li cd ...
-.Pc
 .Sh SYNOPSIS
 .Nm
 .Op Ar command
@@ -42,22 +37,23 @@ and
 .Nm
 is a utility to manage alias-like shortcuts to be used with
 .Xr cd 1 .
-" TODO: Explain links, destinations and shortcuts.
-" TODO: Add a note about libgoat.
-" TODO: Add a note about cd.
-" TODO: Add a note about shell rc files.
+.\" TODO: Add a note about libgoat.
+.\" TODO: Add a note about cd.
+.\" TODO: Add a note about shell rc files.
+.Pp
 The commands are as follows:
 .Bl -tag -width "deleteprefix"
-.It Cm delete Ar link ...
+.It Cm delete Ar shortcut ...
 Delete
-.Ar link
+.Ar shortcut
 from
 .Ev GOAT_PATH .
 .It Cm deleteprefix Ar prefix
-Delete all the links pointing to directories with the given
+Delete all the shortcuts associated with directories, which start with the
+given
 .Ar prefix .
 .It Cm fix
-Remove broken links.
+Remove shortcuts, which point to non-existing directories.
 .It Cm help
 Show help.
 .It Cm link Ar shortcut Ar destination
@@ -82,9 +78,33 @@ Always succeeds.
 .It Cm list
 Show a list of all shortcuts.
 .It Cm nuke
-Delete all the links.
+Delete all the shortcuts.
 .It Cm version
 Show version.
+.El
+.Sh GLOSSARY
+.Bl -tag -width shortcut
+.It Em destination
+A directory pointed to by a
+.Em shortcut .
+.It Em link
+A relation based on symbolic links between a
+.Em shortcut
+and a
+.Em destination .
+.It Em shortcut
+A symbolic link file stored in
+.Ev GOAT_PATH
+that is associated with a certain
+.Em destination .
+When its name is specified as an argument to
+.Xr cd 1
+it causes
+.Nm
+to change the working directory to the
+.Em destination
+associated with the
+.Em shortcut .
 .El
 .Sh ENVIRONMENT
 .Bl -tag -width "GOAT_PATH" -compact
@@ -95,29 +115,40 @@ shortcuts are stored.
 .El
 .Sh EXAMPLES
 Create a shortcut named
-.Dq h4xdir
-to the
-.Pa ~/Documents/dev
-directory:
+.Dq f
+to
+.Pa ~/Documents/dev/freebsd
+(no need to use
+.Cm link
+here):
 .Bd -literal -offset indent
-goat h4xdir ~/Documents/dev
+goat f ~/Documents/dev/freebsd
 .Ed
 .Pp
 Follow a link to change a directory with
 .Xr cd 1 :
 .Bd -literal -offset indent
-cd h4xdir
+cd f
 .Ed
 .Pp
-Follow a link (and don't stop there!):
+Take the
+.Dq f
+shortcut and enter its destination subdirectory with just one command:
 .Bd -literal -offset indent
-cd h4xdir/awesome-project
+cd f/ports
+.Ed
+.Pp
+Create a shortcut named
+.Dq p
+to the current directory:
+.Bd -literal -offset indent
+goat p .
 .Ed
 .Pp
 Go up the filesystem tree with
 .Cm ...
 .Po
-same as
+same as the standard
 .Dq Li cd ../../
 .Pc :
 .Bd -literal -offset indent
@@ -131,27 +162,12 @@ goat list
 .Pp
 Delete a link (or more):
 .Bd -literal -offset indent
-goat delete h4xdir lojban
+goat delete h4xdir freebsd
 .Ed
 .Pp
 Delete all the links which point to directories with the given prefix:
 .Bd -literal -offset indent
 goat deleteprefix $HOME/Documents
-.Ed
-.Pp
-Delete all saved links:
-.Bd -literal -offset indent
-goat nuke
-.Ed
-.Pp
-Delete broken links:
-.Bd -literal -offset indent
-goat fix
-.Ed
-.Pp
-Print the help message:
-.Bd -literal -offset indent
-goat help
 .Ed
 .Sh COMPATIBILITY
 .Nm
@@ -161,6 +177,19 @@ has no known compatibility issues.
 should work just fine with MinGW environments.
 .Sh SEE ALSO
 .Xr cd 1 ,
+.Xr ln 1 ,
 .Xr sh 1
+.Ss Similar software
+.Bl -ohang
+.It Xr autojump 1
+.Lk https://github.com/wting/autojump
+.It Xr fasd 1
+.Lk https://github.com/clvv/fasd
+.It Xr z 1
+.Lk https://github.com/rupa/z/
+.El
 .Sh AUTHORS
 .An Mateusz Piotrowski Aq Mt 0mp@FreeBSD.org
+.Sh BUGS
+Please report bugs at
+.Lk https://github.com/0mp/goat/
