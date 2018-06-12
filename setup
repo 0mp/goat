@@ -67,7 +67,7 @@ usage()
 {
 
 	cat <<EOF
-Usage: $0 [-d|-h|-p|-s]
+Usage: $0 [-b bashcompletiondir] [-d destdir] [-h] [-p dir] [-s file]
 
 Options:
     -b, --bash-completion DIR
