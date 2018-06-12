@@ -71,8 +71,8 @@ Usage: $0 [-d|-h|-p|-s]
 
 Options:
     -b, --bash-completion DIR
-        .Set the directory to install Bash completion files in. Disable by
-         setting it to "/dev/null". Default: "$HOME/.bash_completion.d".
+        Set the directory to install Bash completion files in. Disable by
+        setting it to "/dev/null". Default: "$HOME/.bash_completion.d".
 
     -d, --destination DIR
         Set the directory to install the goat script. Remember to make sure that
