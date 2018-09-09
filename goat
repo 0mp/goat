@@ -38,15 +38,6 @@ set -eu
 
 version=2.6.0
 
-case $(uname -s) in
-	[Mm][Ii][Nn][Gg][Ww]*)
-		LN=mingw_ln
-		;;
-	*)
-		LN=unix_ln
-		;;
-esac
-
 usage()
 {
 
@@ -160,13 +151,14 @@ link()
 		rm -- "$GOAT_PATH/$1"
 	fi
 
-	$LN "$targetpath" "$GOAT_PATH/$1"
+	$ln "$targetpath" "$GOAT_PATH/$1"
 }
 
 unix_ln()
 {
 	targetpath="$1"
 	destination="$2"
+
 	ln -fs -- "$targetpath" "$destination"
 }
 
@@ -174,6 +166,7 @@ mingw_ln()
 {
 	targetpath="$1"
 	destination="$2"
+
 	"$GOAT_PATH/mingw_ln.bat" "$destination" "$targetpath"
 }
 
@@ -187,6 +180,15 @@ list()
 	done
 	' sh {} + | sort
 }
+
+case $(uname -s) in
+	[Mm][Ii][Nn][Gg][Ww]*)
+		ln='mingw_ln'
+		;;
+	*)
+		ln='unix_ln'
+		;;
+esac
 
 case "$#" in
 	0)
