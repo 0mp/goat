@@ -76,7 +76,7 @@ EOF
 errxit()
 {
 
-	printf "error: %s\n" "$*"
+	printf 'error: %s\n' "$*" 1>&2
 	trap - EXIT
 	exit 1
 }
@@ -141,7 +141,7 @@ link()
 {
 
 	targetpath="$(
-		if CDPATH= command cd -- "$2" 2>/dev/null
+		if CDPATH='' command cd -- "$2" 2>/dev/null
 		then
 			pwd -P 2>/dev/null || pwd
 		fi
@@ -209,7 +209,7 @@ case "$#" in
 				nuke
 				;;
 			--version|v*)
-				printf "%s\n" "$version"
+				printf '%s\n' "$version"
 				;;
 			*)
 				errxit "'$1' is an invalid command"
