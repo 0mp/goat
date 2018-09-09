@@ -11,7 +11,7 @@
 >
 > _~&#32;[Jonathan Paugh][jpaugh] on [Google+]_
 
-```sh
+```script
 [ ~/Pictures ] $ goat dev ~/Documents/devel # create a link to the dev directory
 [ ~/Pictures ] $ ls # see that there is no ~/Pictures/dev directory here
 seahorses wallpapers
@@ -49,7 +49,7 @@ See `Makefile` for more details.
 
 ### System-wide installation
 
-```sh
+```script
 # make install
 ```
 
@@ -57,7 +57,7 @@ See `Makefile` for more details.
 
 If you'd rather install it locally for your user only then: 
 
-```sh
+```script
 $ make PREFIX="$HOME/.local" install
 ```
 
@@ -65,8 +65,8 @@ Aferwards:
 
 - Make sure that `~/.local/bin` is in your `PATH`:
 
-  ```sh
-  cat <<'EOF' >> ~/.bashrc
+  ```script
+  $ cat <<'EOF' >> ~/.bashrc
   case "$PATH" in
       *$HOME/.local/bin*) ;;
       *) PATH="$HOME/.local/bin:$PATH" ;;
@@ -77,8 +77,8 @@ Aferwards:
 - Make sure that files inside `~/.local/etc/bash_completion.d` are actually
   sourced by the Bash completion library:
 
-  ```sh
-  cat <<'EOF' >> ~/.bash_completion
+  ```script
+  $ cat <<'EOF' >> ~/.bash_completion
   if [[ -d ~/.bash_completion.d ]]
   then
       for f in ~/.local/etc/bash_completion.d/*
@@ -91,13 +91,13 @@ Aferwards:
 
 ### Installation of MinGW-compatible version of goat
 
-```sh
+```script
 # make install-mingw
 ```
 
 ## Usage overview
 
-```sh
+```script
 Create a shortcut named “f” to ~/Documents/dev/freebsd (no need to use
 the link command explicitly here):
 
