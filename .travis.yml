@@ -5,6 +5,7 @@ sudo: required
 addons:
   apt:
     packages:
+    - mandoc
     - shellcheck
 
 before_install:

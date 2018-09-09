@@ -91,6 +91,7 @@ goat="$PWD/goat"
 export GOAT_PATH="${TEST_PATH:-"/tmp/goat-test-$$-$(date +%Y-%m-%d-%H-%M-%S)"}"
 libgoat="$PWD/libgoat.sh"
 
+chmod +x "$goat"
 . "$libgoat"
 
 set_up
