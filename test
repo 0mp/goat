@@ -40,7 +40,7 @@ set -eu
 err()
 {
 
-	printf "%s\n" "$@" 1>&2
+	printf '%s\n' "$@" 1>&2
 }
 
 clean_up()

@@ -38,6 +38,7 @@ GOAT_MINGW_LN = ./mingw_ln.bat
 GOAT_LIB = ./libgoat.sh
 GOAT_SCRIPT = ./goat
 GOAT_SCRIPT_SOURCE = ./goat.in
+GOAT_TEST = ./test
 
 .PHONY: build
 build: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
@@ -89,7 +90,8 @@ lint: build
 	shellcheck --shell=sh ${GOAT_SCRIPT}
 	checkbashisms -npfx ${GOAT_SCRIPT}
 
-	mandoc -Tlint ${GOAT_MANPAGE}
+	shellcheck -e SC1090 --shell=sh ${GOAT_TEST}
+	checkbashisms -npfx ${GOAT_TEST}
 
 .PHONY: clean
 clean:
