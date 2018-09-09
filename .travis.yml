@@ -24,9 +24,9 @@ before_install:
 
 script:
     - export PATH="$PATH:~/bin"
-    - ./lint
+    - make build
+    - make lint
     - DEBUG=1 ./test
-    - ./setup -d "$HOME/bin" -p "$HOME/.goat"
     - . ~/.bashrc
     - DEBUG=1 TEST_PATH="$PWD/.goat" ./test
 
