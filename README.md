@@ -45,60 +45,103 @@ BTW, Bash completion is now fully working with goat's shortcuts.
 
 ## Installation
 
+See `Makefile` for more details.
+
+### System-wide installation
+
 ```sh
-git clone https://github.com/0mp/goat
-cd goat
-./setup
-# Consider running `printf "%s\n" '~/bin:$PATH' >> ~/.bashrc`
-# if ~/bin isn't already in your $PATH.
-. ~/.bashrc
+# make install
 ```
 
-See `./setup --help` for advanced options.
+### Local installation
+
+If you'd rather install it locally for your user only then: 
+
+```sh
+$ make PREFIX="$HOME/.local" install
+```
+
+Aferwards:
+
+- Make sure that `~/.local/bin` is in your `PATH`:
+
+  ```sh
+  cat <<'EOF' >> ~/.bashrc
+  case "$PATH" in
+      *$HOME/.local/bin*) ;;
+      *) PATH="$HOME/.local/bin:$PATH" ;;
+  esac
+  EOF
+  ```
+
+- Make sure that files inside `~/.local/etc/bash_completion.d` are actually
+  sourced by the Bash completion library:
+
+  ```sh
+  cat <<'EOF' >> ~/.bash_completion
+  if [[ -d ~/.bash_completion.d ]]
+  then
+      for f in ~/.local/etc/bash_completion.d/*
+      do
+          [[ -f $f ]] && source "$f"
+      done
+  fi
+  EOF
+  ```
+
+### Installation of MinGW-compatible version of goat
+
+```sh
+# make install-mingw
+```
 
 ## Usage overview
 
 ```sh
-# Create a link (h4xdir) to a directory:
-goat h4xdir ~/Documents/dev
+Create a shortcut named “f” to ~/Documents/dev/freebsd (no need to use
+the link command explicitly here):
 
-# Follow a link to change a directory:
-cd h4xdir
+      $ goat f ~/Documents/dev/freebsd
 
-# Follow a link (and don't stop there!):
-cd h4xdir/awesome-project
+Follow a link to change a directory with cd(1):
 
-# Go up the filesystem tree with '...' (same as `cd ../../`):
-cd ...
+      $ cd f
 
-# List all your links:
-goat list
+Take the “f” shortcut and enter its destination subdirectory with just
+one command:
 
-# Delete a link (or more):
-goat delete h4xdir lojban
+      $ pwd
+      /home/0mp
+      $ cd f/ports
+      $ pwd
+      /usr/home/0mp/freebsd/ports
 
-# Delete all the links which point to directories with the given prefix:
-goat deleteprefix $HOME/Documents
+Create a shortcut named “p” to the current directory:
 
-# Delete all saved links:
-goat nuke
+      $ goat p .
 
-# Delete broken links:
-goat fix
+Go up the filesystem tree with ... (same as the standard “cd ../../”):
 
-# Print the help message:
-goat help
-```
+      $ cd ...
 
-## Development
+List all your links:
 
-See `CONTRIBUTING.md`.
+      $ goat list
+      dots    ->      /usr/home/0mp/.dotfiles
+      down    ->      /usr/home/0mp/Downloads
+      f       ->      /usr/home/0mp/freebsd
+      p       ->      /usr/home/0mp/freebsd/ports
+      pa      ->      /usr/home/0mp/freebsd/patches
+      src     ->      /usr/home/0mp/freebsd/svn/src
+      svn     ->      /usr/home/0mp/freebsd/svn
 
-### Testing
+Delete a link (or more):
 
-```sh
-./lint
-./test
+      $ goat delete f p
+
+Delete all the links which point to directories with the given prefix:
+
+      $ goat deleteprefix "$HOME/Documents"
 ```
 
 ## License
