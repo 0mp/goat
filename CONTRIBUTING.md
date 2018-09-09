@@ -1,9 +1,15 @@
 # Development
 
+Required software:
+
+ - ShellCheck
+ - checkbashisms
+ - mandoc
+
 ## Use `./lint` to test POSIX compliance and avoid common errors
 
 ```sh
-./lint
+make lint
 ```
 
 ## Testing
