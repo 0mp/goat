@@ -58,7 +58,7 @@ in interactive shell sessions.
 intercepts
 .Xr cd 1
 calls
-.Pq e.g. Dq Li cd Em newdirectory
+.Pq e.g., Dq Li cd Em newdirectory
 by redefining it as a shell function, which implements the following behavior:
 .Bl -enum -offset indent
 .It
@@ -87,9 +87,9 @@ Additionally,
 extends the standard
 .Xr cd 1
 handling of switching to the parent directory
-.Pq e.g. Dq Li cd ..
+.Pq e.g., Dq Li cd ..
 by allowing for specifying more than two dots
-.Pq e.g. Dq Li cd .... .
+.Pq e.g., Dq Li cd .... .
 Every third and subsequent dot is replaced with
 .Dq Li ../ .
 This way
@@ -125,7 +125,7 @@ The
 .Cm link
 keyword is usually optional, i.e.,
 .Dq Li goat shortcut dest
-is sufficient if it doesn't conflict with other
+is sufficient if it does not conflict with other
 .Nm
 commands.
 The link is created for the absolute path of the
