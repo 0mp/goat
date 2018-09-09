@@ -34,7 +34,7 @@
 set -eu
 [ -n "${DEBUG:-}" ] && set -x
 
-GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
+: "${GOAT_PATH:="${XDG_CONFIG_HOME:-"$HOME/.config"}/goat"}"
 
 version=2.6.0
 
