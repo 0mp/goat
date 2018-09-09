@@ -80,6 +80,17 @@ install-mingw: install
 	mkdir -p ${LIBDIR}
 	install -m 0555 ${GOAT_LIB} ${LIBDIR}/
 
+lint: build
+	shellcheck --shell=bash ${GOAT_BASH_COMPLETION}
+
+	shellcheck --shell=sh ${GOAT_LIB}
+	checkbashisms -npfx ${GOAT_LIB}
+
+	shellcheck --shell=sh ${GOAT_SCRIPT}
+	checkbashisms -npfx ${GOAT_SCRIPT}
+
+	mandoc -Tlint ${GOAT_MANPAGE}
+
 .PHONY: clean
 clean:
 	@-rm -f -- goat goat.1
