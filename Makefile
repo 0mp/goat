@@ -82,4 +82,4 @@ install-mingw: install
 
 .PHONY: clean
 clean:
-	@-rm -f -- goat.1
+	@-rm -f -- goat goat.1
