@@ -24,7 +24,7 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd June 12, 2018
+.Dd September 9, 2018
 .Dt GOAT 1
 .Os
 .Sh NAME
@@ -32,14 +32,70 @@
 .Nd POSIX-compliant shell movement boosting hack for real ninjas
 .Sh SYNOPSIS
 .Nm
-.Op Ar command Op Ar arg ...
+.Cm delete Op Ar shortcut ...
+.Nm
+.Cm deleteprefix Ar prefix
+.Nm
+.Cm fix
+.Nm
+.Cm help
+.Nm
+.Cm link Ar shortcut Ar destination
+.Nm
+.Cm list
+.Nm
+.Cm nuke
+.Nm
+.Cm version
 .Sh DESCRIPTION
 .Nm
-is a utility to manage alias-like shortcuts to be used with
-.Xr cd 1 .
-It redefines the
+is a utility to manage
+.Xr alias 1 Ns -like shortcuts to be used with
 .Xr cd 1
-builtin as a shell function to be able to intercept working directory changes.
+in interactive shell sessions.
+.Pp
+.Nm
+intercepts
+.Xr cd 1
+calls
+.Pq e.g. Dq Li cd Em newdirectory
+by redefining it as a shell function, which implements the following behavior:
+.Bl -enum -offset indent
+.It
+Try to switch the current working directory to
+.Em newdirectory
+if possible
+.Pq which is the standard Xr cd 1 behavior .
+.It
+Unless the previous step was successful, interpret
+.Em newdirectory
+as a
+.Nm
+.Em shortcut
+and follow the
+.Em link
+to change the current working directory.
+.El
+.Pp
+Invoking
+.Nm
+without any arguments is equivalent to
+.Dq Li goat list .
+.Pp
+Additionally,
+.Nm
+extends the standard
+.Xr cd 1
+handling of switching to the parent directory
+.Pq e.g. Dq Li cd ..
+by allowing for specifying more than two dots
+.Pq e.g. Dq Li cd .... .
+Every third and subsequent dot is replaced with
+.Dq Li ../ .
+This way
+.Dq Li cd ....
+is equivalent to
+.Dq Li cd ../../../ .
 .Pp
 The commands are as follows:
 .Bl -tag -width "version"
@@ -108,24 +164,43 @@ associated with the
 .Em shortcut .
 .El
 .Sh ENVIRONMENT
-.Bl -tag -width "GOAT_PATH" -compact
+.Bl -tag -width indent
 .It Ev GOAT_PATH
 The directory where
 .Nm
 shortcuts are stored.
+Overwrites
+.Ev XDG_HOME_CONFIG .
+.It Ev XDG_HOME_CONFIG Pq default: Dq Pa ~/.config
+The directory prefix where
+.Nm
+shortcuts are stored.
+For example, setting
+.Ev XDG_HOME_CONFIG
+to
+.Dq Pa ~/settings
+results in
+.Nm
+looking for its
+.Em shortcuts
+in
+.Pa ~/settings/goat .
 .El
 .Sh FILES
-.Bl -tag -width libgoat.sh
-.It Pa ~/.goat
+.Bl -tag -width ~/.config/goat
+.It Pa ~/.config/goat
 The directory where
-.Pa libgoat.sh
-and shortcuts are stored unless
+.Em shortcuts
+are stored unless
 .Ev GOAT_PATH
 is set to a different directory.
-.It Pa libgoat.sh
-The file, which redefines the
-.Xr cd 1
-command.
+The
+.Dq Pa ~/.config
+prefix can be modified by setting
+.Ev XDG_CONFIG_HOME .
+.It Pa "%%LIBDIR%%/libgoat.sh"
+The file, which redefines
+.Xr cd 1 .
 .El
 .Sh EXAMPLES
 Create a shortcut named
@@ -133,30 +208,35 @@ Create a shortcut named
 to
 .Pa ~/Documents/dev/freebsd
 (no need to use
+the
 .Cm link
-explicitly here):
+command explicitly here):
 .Bd -literal -offset indent
-goat f ~/Documents/dev/freebsd
+$ goat f ~/Documents/dev/freebsd
 .Ed
 .Pp
 Follow a link to change a directory with
 .Xr cd 1 :
 .Bd -literal -offset indent
-cd f
+$ cd f
 .Ed
 .Pp
 Take the
 .Dq f
 shortcut and enter its destination subdirectory with just one command:
 .Bd -literal -offset indent
-cd f/ports
+$ pwd
+/home/0mp
+$ cd f/ports
+$ pwd
+/usr/home/0mp/freebsd/ports
 .Ed
 .Pp
 Create a shortcut named
 .Dq p
 to the current directory:
 .Bd -literal -offset indent
-goat p .
+$ goat p .
 .Ed
 .Pp
 Go up the filesystem tree with
@@ -166,22 +246,29 @@ same as the standard
 .Dq Li cd ../../
 .Pc :
 .Bd -literal -offset indent
-cd ...
+$ cd ...
 .Ed
 .Pp
 List all your links:
 .Bd -literal -offset indent
-goat list
+$ goat list
+dots    ->      /usr/home/0mp/.dotfiles
+down    ->      /usr/home/0mp/Downloads
+f       ->      /usr/home/0mp/freebsd
+p       ->      /usr/home/0mp/freebsd/ports
+pa      ->      /usr/home/0mp/freebsd/patches
+src     ->      /usr/home/0mp/freebsd/svn/src
+svn     ->      /usr/home/0mp/freebsd/svn
 .Ed
 .Pp
 Delete a link (or more):
 .Bd -literal -offset indent
-goat delete f p
+$ goat delete f p
 .Ed
 .Pp
 Delete all the links which point to directories with the given prefix:
 .Bd -literal -offset indent
-goat deleteprefix "$HOME/Documents"
+$ goat deleteprefix "$HOME/Documents"
 .Ed
 .Sh COMPATIBILITY
 .Nm
