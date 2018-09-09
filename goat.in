@@ -167,7 +167,7 @@ mingw_ln()
 	targetpath="$1"
 	destination="$2"
 
-	"$GOAT_PATH/mingw_ln.bat" "$destination" "$targetpath"
+	"%%LIBDIR%%/mingw_ln.bat" "$destination" "$targetpath"
 }
 
 list()
