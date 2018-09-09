@@ -36,7 +36,7 @@ set -eu
 
 : "${GOAT_PATH:="${XDG_CONFIG_HOME:-"$HOME/.config"}/goat"}"
 
-version=2.6.0
+version=3.0.0
 
 usage()
 {
