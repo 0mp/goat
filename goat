@@ -36,7 +36,7 @@ set -eu
 
 GOAT_PATH="${GOAT_PATH:-"$HOME/.goat"}"
 
-version=2.5.0
+version=2.6.0
 
 case $(uname -s) in
 	[Mm][Ii][Nn][Gg][Ww]*)
@@ -188,13 +188,10 @@ list()
 	' sh {} + | sort
 }
 
-if [ $# -eq 0 ]
-then
-	usage
-	exit 0
-fi
-
 case "$#" in
+	0)
+		list
+		;;
 	1)
 		case "$1" in
 			f*)
