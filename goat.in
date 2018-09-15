@@ -1,6 +1,6 @@
 #! /bin/sh -
 #
-# goat - A POSIX-compliant shell movement boosting hack for real ninjas.
+# goat - POSIX-compliant shell movement-boosting hack for real ninjas.
 #
 #        This script is a configuration tool for the lightweight framework
 #        capable of organizing shortcuts for the `cd` shell built-in.
@@ -36,7 +36,7 @@ set -eu
 
 : "${GOAT_PATH:="${XDG_CONFIG_HOME:-"$HOME/.config"}/goat"}"
 
-version=3.0.0
+version=3.0.1
 
 usage()
 {
