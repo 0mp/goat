@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 #
-# Copyright 2018 Mateusz Piotrowski <0mp@FreeBSD.org>
+# Copyright 2018, 2019 Mateusz Piotrowski <0mp@FreeBSD.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -24,24 +24,23 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-PREFIX = /usr/local
-BASHCOMPLETIONDIR = ${DESTDIR}${PREFIX}/etc/bash_completion.d
-BINDIR = ${DESTDIR}${PREFIX}/bin
-LIBDIR = ${DESTDIR}${PREFIX}/share/goat
-MANDIR = ${DESTDIR}${PREFIX}/man
-MAN1DIR = ${MANDIR}/man1
+PREFIX=		/usr/local
+BASHCOMPLETIONDIR=	${DESTDIR}${PREFIX}/etc/bash_completion.d
+BINDIR=		${DESTDIR}${PREFIX}/bin
+LIBDIR=		${DESTDIR}${PREFIX}/share/goat
+MANDIR=		${DESTDIR}${PREFIX}/man
+MAN1DIR=	${MANDIR}/man1
 
-GOAT_BASH_COMPLETION = ./goat-completion.bash
-GOAT_MANPAGE = ./goat.1
-GOAT_MANPAGE_SOURCE = ./goat.1.in
-GOAT_MINGW_LN = ./mingw_ln.bat
-GOAT_LIB = ./libgoat.sh
-GOAT_SCRIPT = ./goat
-GOAT_SCRIPT_SOURCE = ./goat.in
-GOAT_TEST = ./test
+GOAT_BASH_COMPLETION=	./goat-completion.bash
+GOAT_MANPAGE=		./goat.1
+GOAT_MANPAGE_SOURCE=	${GOAT_MANPAGE}.in
+GOAT_MINGW_LN=		./mingw_ln.bat
+GOAT_LIB=		./libgoat.sh
+GOAT_SCRIPT=		./goat
+GOAT_SCRIPT_SOURCE=	${GOAT_SCRIPT}.in
+GOAT_TEST=		./test
 
-.PHONY: build
-build: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
+build: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 
 ${GOAT_MANPAGE}: ${GOAT_MANPAGE_SOURCE}
 	awk -v libdir="${LIBDIR}" \
@@ -53,18 +52,17 @@ ${GOAT_SCRIPT}: ${GOAT_SCRIPT_SOURCE}
 	    '{sub("%%LIBDIR%%", libdir); print $0}' \
 	    ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
 
-.PHONY: install
-install: build
-	mkdir -p ${BINDIR}
+install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
+	@mkdir -p ${BINDIR}
 	install -m 0555 ${GOAT_SCRIPT} ${BINDIR}/
 
-	mkdir -p ${LIBDIR}
+	@mkdir -p ${LIBDIR}
 	install -m 0444 ${GOAT_LIB} ${LIBDIR}/
 
-	mkdir -p ${MAN1DIR}
+	@mkdir -p ${MAN1DIR}
 	install -m 0444 ${GOAT_MANPAGE} ${MAN1DIR}/
 
-	mkdir -p ${BASHCOMPLETIONDIR}
+	@mkdir -p ${BASHCOMPLETIONDIR}
 	install -m 0444 ${GOAT_BASH_COMPLETION} ${BASHCOMPLETIONDIR}/
 
 	@echo "========================================================"
@@ -76,12 +74,11 @@ install: build
 	@echo ""
 	@echo "Goat is going to be available the next time you start your shell."
 
-.PHONY: install-mingw
-install-mingw: install
-	mkdir -p ${LIBDIR}
+install-mingw: install .PHONY
+	@mkdir -p ${LIBDIR}
 	install -m 0555 ${GOAT_LIB} ${LIBDIR}/
 
-lint: build
+lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	shellcheck --shell=bash ${GOAT_BASH_COMPLETION}
 
 	shellcheck --shell=sh ${GOAT_LIB}
@@ -93,6 +90,5 @@ lint: build
 	shellcheck -e SC1090 --shell=sh ${GOAT_TEST}
 	checkbashisms -npfx ${GOAT_TEST}
 
-.PHONY: clean
-clean:
+clean: .PHONY
 	@-rm -f -- goat goat.1
