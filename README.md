@@ -1,7 +1,5 @@
 # goat
 
-[![Build Status](https://travis-ci.org/0mp/goat.svg?branch=master)](https://travis-ci.org/0mp/goat)
-[![POSIX Compliance](https://img.shields.io/badge/POSIX-compliant-blue.svg)](http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html)
 [![Version](https://img.shields.io/github/release/0mp/goat.svg)](https://github.com/0mp/goat/releases/latest)
 
 ### Overview
