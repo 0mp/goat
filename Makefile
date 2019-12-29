@@ -36,7 +36,6 @@ GOAT_MANPAGE_SOURCE=	src/${GOAT_MANPAGE}.in
 GOAT_SCRIPT_SOURCE=	src/${GOAT_SCRIPT}.in
 
 GOAT_BASH_COMPLETION=	src/goat-completion.bash
-GOAT_MINGW_LN=		src/mingw_ln.bat
 GOAT_LIB=		src/libgoat.sh
 GOAT_MANPAGE=		goat.1
 GOAT_SCRIPT=		goat
@@ -71,10 +70,6 @@ install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	@echo "to your shell initialization file (e.g., \"~/.bashrc\")."
 	@echo ""
 	@echo "Goat is going to be available the next time you start your shell."
-
-install-mingw: install .PHONY
-	@mkdir -p ${LIBDIR}
-	install -m 0555 ${GOAT_LIB} ${LIBDIR}/
 
 lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	shellcheck --shell=bash ${GOAT_BASH_COMPLETION}
