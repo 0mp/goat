@@ -33,25 +33,33 @@
 cd()
 {
 
-	if [ $# -ne 1 ]
+	if [ $# -eq 0 ]
+	then
+		command cd
+	elif [ $# -gt 1 ]
 	then
 		command cd "$@"
-	elif expr "$1" : "^[.][.]*$" 1>/dev/null
+	elif [ -n "$(printf '%s' "$1" | tr -d '.')" ]
 	then
-		if [ "$1" = "." ] || [ "$1" = ".." ]
+		if [ "$1" = '.' ] || [ "$1" = '..' ]
 		then
 			command cd "$1"
 		else
 			set -- "${1##...}" "../../"
-			while [ x"$1" != x ]
+			while [ -n "$1" ]
 			do
-				set -- "${1##.}" "$2../"
+				set -- "${1##\.}" "$2../"
 			done
 			command cd "$2"
 		fi
-	else
-		CDPATH="${CDPATH:-.}:$GOAT_PATH" \
-		    command cd -P -- "$1" 1>/dev/null
+	elif CDPATH="${CDPATH:-.}:$GOAT_PATH" \
+			command cd -- "$1" 1>/dev/null
+	then
+		if [ "${PWD#${GOAT_PATH}}" != "${PWD}" ]
+		then
+			CDPATH="${CDPATH:-.}:$GOAT_PATH" \
+				command cd -P -- "$1" 1>/dev/null
+		fi
 	fi
 }
 
