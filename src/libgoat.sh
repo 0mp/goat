@@ -1,3 +1,5 @@
+#! /bin/sh -
+#
 # libgoat.sh - A library to source to enable goat links when using cd.
 #
 # ---
