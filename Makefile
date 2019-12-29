@@ -24,53 +24,51 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-PREFIX=		/usr/local
-BASHCOMPLETIONDIR=	${DESTDIR}${PREFIX}/etc/bash_completion.d
-BINDIR=		${DESTDIR}${PREFIX}/bin
-LIBDIR=		${DESTDIR}${PREFIX}/share/goat
-MANDIR=		${DESTDIR}${PREFIX}/man
-MAN1DIR=	${MANDIR}/man1
+DESTDIR?=
+PREFIX?=	${HOME}/.local
 
-GOAT_BASH_COMPLETION=	./goat-completion.bash
-GOAT_MANPAGE=		./goat.1
-GOAT_MANPAGE_SOURCE=	${GOAT_MANPAGE}.in
-GOAT_MINGW_LN=		./mingw_ln.bat
-GOAT_LIB=		./libgoat.sh
-GOAT_SCRIPT=		./goat
-GOAT_SCRIPT_SOURCE=	${GOAT_SCRIPT}.in
-GOAT_TEST=		./test
+BASHCOMPDIR=		${DESTDIR}${PREFIX}/share/bash-completion
+BINDIR=			${DESTDIR}${PREFIX}/bin
+SHAREDIR=		${DESTDIR}${PREFIX}/share/goat
+MANDIR=			${DESTDIR}${PREFIX}/man/man1
 
-build: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
+GOAT_MANPAGE_SOURCE=	src/${GOAT_MANPAGE}.in
+GOAT_SCRIPT_SOURCE=	src/${GOAT_SCRIPT}.in
+
+GOAT_BASH_COMPLETION=	src/goat-completion.bash
+GOAT_MINGW_LN=		src/mingw_ln.bat
+GOAT_LIB=		src/libgoat.sh
+GOAT_MANPAGE=		goat.1
+GOAT_SCRIPT=		goat
+GOAT_TEST=		test
+
+all: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 
 ${GOAT_MANPAGE}: ${GOAT_MANPAGE_SOURCE}
-	awk -v libdir="${LIBDIR}" \
-	    '{sub("%%LIBDIR%%", libdir); print $0}' \
-	    ${GOAT_MANPAGE_SOURCE} > ${GOAT_MANPAGE}
+	@sed "s,%%LIBDIR%%,${LIBDIR}," ${GOAT_MANPAGE_SOURCE} > ${GOAT_MANPAGE}
 
 ${GOAT_SCRIPT}: ${GOAT_SCRIPT_SOURCE}
-	awk -v libdir="${LIBDIR}" \
-	    '{sub("%%LIBDIR%%", libdir); print $0}' \
-	    ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
+	@sed "s,%%LIBDIR%%,${LIBDIR}," ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
 
 install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	@mkdir -p ${BINDIR}
 	install -m 0555 ${GOAT_SCRIPT} ${BINDIR}/
 
-	@mkdir -p ${LIBDIR}
-	install -m 0444 ${GOAT_LIB} ${LIBDIR}/
+	@mkdir -p ${SHAREDIR}
+	install -m 0444 ${GOAT_LIB} ${SHAREDIR}/
 
-	@mkdir -p ${MAN1DIR}
-	install -m 0444 ${GOAT_MANPAGE} ${MAN1DIR}/
+	@mkdir -p ${MANDIR}
+	install -m 0444 ${GOAT_MANPAGE} ${MANDIR}
 
-	@mkdir -p ${BASHCOMPLETIONDIR}
-	install -m 0444 ${GOAT_BASH_COMPLETION} ${BASHCOMPLETIONDIR}/
+	@mkdir -p ${BASHCOMPDIR}
+	install -m 0444 ${GOAT_BASH_COMPLETION} ${BASHCOMPDIR}/
 
 	@echo "========================================================"
 	@echo "Now in order to finish setting up goat add:"
 	@echo ""
 	@echo "    . \"${LIBDIR}/libgoat.sh\""
 	@echo ""
-	@echo "to your shell initialization file (e.g. \"~/.bashrc\")."
+	@echo "to your shell initialization file (e.g., \"~/.bashrc\")."
 	@echo ""
 	@echo "Goat is going to be available the next time you start your shell."
 
