@@ -51,16 +51,16 @@ ${GOAT_SCRIPT}: ${GOAT_SCRIPT_SOURCE}
 
 install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	@mkdir -p ${BINDIR}
-	install -m 0555 ${GOAT_SCRIPT} ${BINDIR}/
+	install -m 0555 ${GOAT_SCRIPT} ${BINDIR}
 
 	@mkdir -p ${SHAREDIR}
-	install -m 0444 ${GOAT_LIB} ${SHAREDIR}/
+	install -m 0444 ${GOAT_LIB} ${SHAREDIR}
 
 	@mkdir -p ${MANDIR}
 	install -m 0444 ${GOAT_MANPAGE} ${MANDIR}
 
 	@mkdir -p ${BASHCOMPDIR}
-	install -m 0444 ${GOAT_BASH_COMPLETION} ${BASHCOMPDIR}/
+	install -m 0444 ${GOAT_BASH_COMPLETION} ${BASHCOMPDIR}
 
 	@echo "========================================================"
 	@echo "Now in order to finish setting up goat add:"
