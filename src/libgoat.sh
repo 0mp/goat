@@ -41,7 +41,7 @@ cd()
 	elif [ $# -gt 1 ]
 	then
 		command cd "$@"
-	elif [ -n "$(printf '%s' "$1" | tr -d '.')" ]
+	elif [ -z "$(printf '%s' "$1" | tr -d '.')" ]
 	then
 		if [ "$1" = '.' ] || [ "$1" = '..' ]
 		then
