@@ -36,7 +36,7 @@ set -eu
 
 : "${GOAT_PATH:="${XDG_CONFIG_HOME:-"$HOME/.config"}/goat"}"
 
-version=3.0.1
+version=3.0.2
 
 usage()
 {
@@ -190,6 +190,7 @@ case $(uname -s) in
 		;;
 esac
 
+mkdir -p -- "${GOAT_PATH}"
 case "$#" in
 	0)
 		list
