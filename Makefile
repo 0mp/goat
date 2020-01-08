@@ -44,10 +44,10 @@ GOAT_TEST=		test
 all: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 
 ${GOAT_MANPAGE}: ${GOAT_MANPAGE_SOURCE}
-	@sed "s,%%LIBDIR%%,${LIBDIR}," ${GOAT_MANPAGE_SOURCE} > ${GOAT_MANPAGE}
+	@sed "s,%%SHAREDIR%%,${SHAREDIR}," ${GOAT_MANPAGE_SOURCE} > ${GOAT_MANPAGE}
 
 ${GOAT_SCRIPT}: ${GOAT_SCRIPT_SOURCE}
-	@sed "s,%%LIBDIR%%,${LIBDIR}," ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
+	@sed "s,%%SHAREDIR%%,${SHAREDIR}," ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
 
 install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	@mkdir -p ${BINDIR}
@@ -65,7 +65,7 @@ install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	@echo "========================================================"
 	@echo "Now in order to finish setting up goat add:"
 	@echo ""
-	@echo "    . \"${LIBDIR}/libgoat.sh\""
+	@echo "    . \"${SHAREDIR}/libgoat.sh\""
 	@echo ""
 	@echo "to your shell initialization file (e.g., \"~/.bashrc\")."
 	@echo ""
