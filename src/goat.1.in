@@ -198,7 +198,7 @@ The
 .Dq Pa ~/.config
 prefix can be modified by setting
 .Ev XDG_CONFIG_HOME .
-.It Pa "%%LIBDIR%%/libgoat.sh"
+.It Pa "%%SHAREDIR%%/libgoat.sh"
 The file, which redefines
 .Xr cd 1 .
 .El
