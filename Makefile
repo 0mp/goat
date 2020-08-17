@@ -30,7 +30,7 @@ PREFIX?=	${HOME}/.local
 BASHCOMPDIR=		${DESTDIR}${PREFIX}/share/bash-completion
 BINDIR=			${DESTDIR}${PREFIX}/bin
 SHAREDIR=		${DESTDIR}${PREFIX}/share/goat
-MANDIR=			${DESTDIR}${PREFIX}/man/man1
+MANDIR=			${DESTDIR}${PREFIX}/share/man/man1
 
 GOAT_MANPAGE_SOURCE=	src/${GOAT_MANPAGE}.in
 GOAT_SCRIPT_SOURCE=	src/${GOAT_SCRIPT}.in
