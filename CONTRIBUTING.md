@@ -12,12 +12,6 @@ Required software:
 make lint
 ```
 
-## Testing
-
-```sh
-./test
-```
-
 # Style
 
 It is loosely based on [the FreeBSD style(9)][style9]. It is not a shell

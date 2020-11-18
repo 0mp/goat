@@ -42,7 +42,6 @@ GOAT_BASH_COMPLETION=	src/goat-completion.bash
 GOAT_LIB=		src/libgoat.sh
 GOAT_MANPAGE=		goat.1
 GOAT_SCRIPT=		goat
-GOAT_TEST=		test
 GOAT_MAKEFILE=		Makefile
 
 all: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
@@ -83,9 +82,6 @@ lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 
 	shellcheck --shell=sh ${GOAT_SCRIPT}
 	checkbashisms -npfx ${GOAT_SCRIPT}
-
-	shellcheck -e SC1090 --shell=sh ${GOAT_TEST}
-	checkbashisms -npfx ${GOAT_TEST}
 
 clean: .PHONY
 	@-rm -f -- goat goat.1
