@@ -87,5 +87,8 @@ lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	shellcheck --shell=sh ${GOAT_SCRIPT}
 	checkbashisms -npfx ${GOAT_SCRIPT}
 
+test: Kyuafile test.sh
+	env -i kyua test || env -i kyua report --verbose
+
 clean: .PHONY
 	@-rm -f -- goat goat.1

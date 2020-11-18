@@ -1,0 +1,6 @@
+syntax(2)
+
+test_suite('test')
+
+-- This specifies the test programs
+atf_test_program{name='test.sh'}
