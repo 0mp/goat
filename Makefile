@@ -26,7 +26,9 @@
 
 DESTDIR?=
 PREFIX?=	${HOME}/.local
-VERSION?=	4.0.0
+VERSION!=	if [ -z "$$VERSION" ]; then \
+			git describe --tags; \
+		fi
 
 BASHCOMPDIR=		${DESTDIR}${PREFIX}/share/bash-completion
 BINDIR=			${DESTDIR}${PREFIX}/bin
