@@ -151,23 +151,7 @@ link()
 		rm -- "$GOAT_PATH/$1"
 	fi
 
-	$ln "$targetpath" "$GOAT_PATH/$1"
-}
-
-unix_ln()
-{
-	targetpath="$1"
-	destination="$2"
-
-	ln -fs -- "$targetpath" "$destination"
-}
-
-mingw_ln()
-{
-	targetpath="$1"
-	destination="$2"
-
-	"%%LIBDIR%%/mingw_ln.bat" "$destination" "$targetpath"
+	ln -fs -- "$targetpath" "$GOAT_PATH/$1"
 }
 
 list()
@@ -180,15 +164,6 @@ list()
 	done
 	' sh {} + | sort
 }
-
-case $(uname -s) in
-	[Mm][Ii][Nn][Gg][Ww]*)
-		ln='mingw_ln'
-		;;
-	*)
-		ln='unix_ln'
-		;;
-esac
 
 mkdir -p -- "${GOAT_PATH}"
 case "$#" in

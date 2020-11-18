@@ -39,7 +39,6 @@ GOAT_PATH="$default_goat_path"
 destdir="$HOME/bin"
 goat="$workingdir/goat"
 libgoat="$workingdir/libgoat.sh"
-mingw_ln="$workingdir/mingw_ln.bat"
 shellrc="$HOME/.bashrc"
 tmpshellrc="$workingdir/$(basename -- "$shellrc").tmp"
 
@@ -49,18 +48,6 @@ errxit()
 	printf "error: %s\n" "$*"
 	trap - EXIT #TODO
 	exit 1
-}
-
-isMinGW()
-{
-	case $(uname -s) in
-		[Mm][Ii][Nn][Gg][Ww]*)
-			true
-			;;
-		*)
-			false
-			;;
-	esac
 }
 
 usage()
@@ -123,10 +110,6 @@ mkdir -p "$destdir"
 mkdir -p "$GOAT_PATH"
 cp "$goat" "$destdir"
 cp "$libgoat" "$GOAT_PATH"
-if isMinGW
-then
-	cp "$mingw_ln" "$GOAT_PATH"
-fi
 
 if ! grep ". $GOAT_PATH/libgoat.sh" "$shellrc" 2>/dev/null 1>&2
 then

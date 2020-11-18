@@ -87,12 +87,6 @@ Aferwards:
   EOF
   ```
 
-### Installation of MinGW-compatible version of goat
-
-```script
-# make install-mingw
-```
-
 ## Usage overview
 
 ```script

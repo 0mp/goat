@@ -1,7 +1,7 @@
 .\"
 .\" SPDX-License-Identifier: BSD-2-Clause-FreeBSD
 .\"
-.\" Copyright (c) 2018 Mateusz Piotrowski <0mp@FreeBSD.org>
+.\" Copyright (c) 2018-2020 Mateusz Piotrowski <0mp@FreeBSD.org>
 .\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
@@ -24,7 +24,7 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd September 18, 2018
+.Dd November 18, 2020
 .Dt GOAT 1
 .Os
 .Sh NAME
@@ -273,9 +273,6 @@ $ goat deleteprefix "$HOME/Documents"
 .Sh COMPATIBILITY
 .Nm
 has no known compatibility issues.
-.Pp
-.Nm
-should work just fine with MinGW environments.
 .Sh SEE ALSO
 .Xr cd 1 ,
 .Xr ln 1 ,
