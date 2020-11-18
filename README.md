@@ -1,7 +1,5 @@
 # goat
 
-[![Version](https://img.shields.io/github/release/0mp/goat.svg)](https://github.com/0mp/goat/releases/latest)
-
 ### Overview
 
 > I used to retrieve carefully-constructed `cd` commands from my history. 
