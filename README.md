@@ -9,7 +9,7 @@
 >
 > _~&#32;[Jonathan Paugh][jpaugh] on [Google+]_
 
-```script
+```console
 [ ~/Pictures ] $ goat dev ~/Documents/devel # create a link to the dev directory
 [ ~/Pictures ] $ ls # see that there is no ~/Pictures/dev directory here
 seahorses wallpapers
@@ -51,7 +51,7 @@ Aferwards:
 
 - Make sure that `~/.local/bin` is in your `PATH`:
 
-  ```script
+  ```console
   $ cat <<'EOF' >> ~/.bashrc
   case "$PATH" in
       *$HOME/.local/bin*) ;;
@@ -63,7 +63,7 @@ Aferwards:
 - Make sure that files inside `~/.local/etc/bash_completion.d` are actually
   sourced by the Bash completion library:
 
-  ```script
+  ```console
   $ cat <<'EOF' >> ~/.bash_completion
   if [[ -d ~/.bash_completion.d ]]
   then
@@ -77,7 +77,7 @@ Aferwards:
 
 ## Usage overview
 
-```script
+```console
 Create a shortcut named “f” to ~/Documents/dev/freebsd (no need to use
 the link command explicitly here):
 
