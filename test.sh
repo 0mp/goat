@@ -86,6 +86,27 @@ EOF
 	cd ...
 	pwd
 EOF
+
+	# Check that cd(1) prefers directories in $PWD over aliases.
+	atf_check -o "match:^$PWD/l1$" sh -e <<-EOF
+	. "$libgoat"
+	mkdir l1
+	cd l1
+	pwd
+	cd ..
+	rmdir l1
+EOF
+
+	# Check that if two or more arguments are passed to cd(1), then aliases
+	# are not considered.
+	atf_check -o "match:^$PWD/l1$" sh -e <<-EOF
+	. "$libgoat"
+	mkdir l1
+	cd -- l1
+	pwd
+	cd ..
+	rmdir l1
+EOF
 }
 
 atf_init_test_cases()
