@@ -30,10 +30,14 @@ VERSION!=	if [ -z "$$VERSION" ]; then \
 			git describe --tags; \
 		fi
 
-BASHCOMPDIR=		${DESTDIR}${PREFIX}/share/bash-completion
-BINDIR=			${DESTDIR}${PREFIX}/bin
-SHAREDIR=		${DESTDIR}${PREFIX}/share/goat
-MANDIR=			${DESTDIR}${PREFIX}/share/man/man1
+BASHCOMPDIR=		${PREFIX}/share/bash-completion
+BINDIR=			${PREFIX}/bin
+SHAREDIR=		${PREFIX}/share/goat
+MANDIR=			${PREFIX}/share/man/man1
+DESTBASHCOMPDIR=	${DESTDIR}${BASHCOMPDIR}
+DESTBINDIR=		${DESTDIR}${BINDIR}
+DESTSHAREDIR=		${DESTDIR}${SHAREDIR}
+DESTMANDIR=		${DESTDIR}${MANDIR}
 
 GOAT_MANPAGE_SOURCE=	src/${GOAT_MANPAGE}.in
 GOAT_SCRIPT_SOURCE=	src/${GOAT_SCRIPT}.in
@@ -53,22 +57,22 @@ ${GOAT_SCRIPT}: ${GOAT_SCRIPT_SOURCE} ${GOAT_MAKEFILE}
 	@sed "s,%%VERSION%%,${VERSION}," ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
 
 install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
-	@mkdir -p ${BINDIR}
-	install -m 0555 ${GOAT_SCRIPT} ${BINDIR}
+	@mkdir -p ${DESTBINDIR}
+	install -m 0555 ${GOAT_SCRIPT} ${DESTBINDIR}
 
 	@mkdir -p ${SHAREDIR}
-	install -m 0444 ${GOAT_LIB} ${SHAREDIR}
+	install -m 0444 ${GOAT_LIB} ${DESTSHAREDIR}
 
 	@mkdir -p ${MANDIR}
-	install -m 0444 ${GOAT_MANPAGE} ${MANDIR}
+	install -m 0444 ${GOAT_MANPAGE} ${DESTMANDIR}
 
 	@mkdir -p ${BASHCOMPDIR}
-	install -m 0444 ${GOAT_BASH_COMPLETION} ${BASHCOMPDIR}
+	install -m 0444 ${GOAT_BASH_COMPLETION} ${DESTBASHCOMPDIR}
 
 	@echo "========================================================"
 	@echo "Now in order to finish setting up goat add:"
 	@echo ""
-	@echo "    . \"${SHAREDIR}/libgoat.sh\""
+	@echo "    . \"${DESTSHAREDIR}/libgoat.sh\""
 	@echo ""
 	@echo "to your shell initialization file (e.g., \"~/.bashrc\")."
 	@echo ""
