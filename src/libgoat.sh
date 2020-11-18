@@ -6,7 +6,7 @@
 #
 # SPDX-License-Identifier: BSD-2-Clause
 #
-# Copyright 2017-2019 Mateusz Piotrowski <0mp@FreeBSD.org>
+# Copyright 2017-2020 Mateusz Piotrowski <0mp@FreeBSD.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -62,6 +62,8 @@ cd()
 			CDPATH="${CDPATH:-.}:$GOAT_PATH" \
 				command cd -P -- "$1" 1>/dev/null
 		fi
+	else
+		return
 	fi
 }
 
