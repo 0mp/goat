@@ -43,20 +43,8 @@ BTW, Bash completion is now fully working with goat's shortcuts.
 
 ## Installation
 
-See `Makefile` for more details.
-
-### System-wide installation
-
-```script
-# make install
-```
-
-### Local installation
-
-If you'd rather install it locally for your user only then: 
-
-```script
-$ make PREFIX="$HOME/.local" install
+```console
+$ make install
 ```
 
 Aferwards:
