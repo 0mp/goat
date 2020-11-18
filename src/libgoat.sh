@@ -35,10 +35,7 @@
 cd()
 {
 
-	if [ $# -eq 0 ]
-	then
-		command cd
-	elif [ $# -gt 1 ]
+	if [ $# -ne 1 ]
 	then
 		command cd "$@"
 	elif expr -- "X$1" : 'X[.]*$' 1>/dev/null
