@@ -59,6 +59,7 @@ cd()
 	then
 		if [ "${PWD#${GOAT_PATH}}" != "${PWD}" ]
 		then
+			command cd - 1>/dev/null || :
 			CDPATH="${CDPATH:-.}:$GOAT_PATH" \
 				command cd -P -- "$1" 1>/dev/null
 		fi
