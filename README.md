@@ -124,7 +124,7 @@ Delete all the links which point to directories with the given prefix:
 
 ## License
 
-Licensed under BSD license. Copyright &#169; 2016-2018 Mateusz Piotrowski
+Licensed under 2-Clause BSD license. Copyright &#169; 2016-2021 Mateusz Piotrowski
 
 [posix_me_harder]: http://wiki.wlug.org.nz/POSIX_ME_HARDER
 [posixly_correct]: http://wiki.wlug.org.nz/POSIXLY_CORRECT
