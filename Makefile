@@ -64,13 +64,13 @@ install: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 	@mkdir -p ${DESTBINDIR}
 	install -m 0555 ${GOAT_SCRIPT} ${DESTBINDIR}
 
-	@mkdir -p ${SHAREDIR}
+	@mkdir -p ${DESTSHAREDIR}
 	install -m 0444 ${GOAT_LIB} ${DESTSHAREDIR}
 
-	@mkdir -p ${MANDIR}
+	@mkdir -p ${DESTMANDIR}
 	install -m 0444 ${GOAT_MANPAGE} ${DESTMANDIR}
 
-	@mkdir -p ${BASHCOMPDIR}
+	@mkdir -p ${DESTBASHCOMPDIR}
 	install -m 0444 ${GOAT_BASH_COMPLETION} ${DESTBASHCOMPDIR}
 
 	@echo "========================================================"
