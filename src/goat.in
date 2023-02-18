@@ -56,6 +56,9 @@ Commands:
     help
         Show help.
 
+    libgoat
+	Print the path to where libgoat.sh is installed.
+
     link LINK DEST
         Create a symbolic link between $GOAT_PATH/LINK and DEST. The link
         keyword is usually optional, i.e., 'goat LINK DEST' is sufficient
@@ -178,7 +181,10 @@ case "$#" in
 			-h|--help|h*)
 				usage
 				;;
-			l*)
+			lib*)
+				printf '%s\n' "%%SHAREDIR%%/libgoat.sh"
+				;;
+			lis*)
 				list
 				;;
 			nuke)
