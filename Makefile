@@ -48,7 +48,8 @@ GOAT_MANPAGE=		goat.1
 GOAT_SCRIPT=		goat
 GOAT_MAKEFILE=		Makefile
 
-all: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
+.PHONY: all
+all: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 
 ${GOAT_MANPAGE}: ${GOAT_MANPAGE_SOURCE} ${GOAT_MAKEFILE}
 	@sed "s,%%SHAREDIR%%,${SHAREDIR}," ${GOAT_MANPAGE_SOURCE} > ${GOAT_MANPAGE}
@@ -56,7 +57,8 @@ ${GOAT_MANPAGE}: ${GOAT_MANPAGE_SOURCE} ${GOAT_MAKEFILE}
 ${GOAT_SCRIPT}: ${GOAT_SCRIPT_SOURCE} ${GOAT_MAKEFILE}
 	@sed "s,%%VERSION%%,${VERSION}," ${GOAT_SCRIPT_SOURCE} > ${GOAT_SCRIPT}
 
-install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
+.PHONY: install
+install: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 	@mkdir -p ${DESTBINDIR}
 	install -m 0555 ${GOAT_SCRIPT} ${DESTBINDIR}
 
@@ -78,7 +80,8 @@ install: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	@echo ""
 	@echo "Goat is going to be available the next time you start your shell."
 
-lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
+.PHONY: lint
+lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 	shellcheck --shell=bash ${GOAT_BASH_COMPLETION}
 
 	shellcheck --shell=sh ${GOAT_LIB}
@@ -87,8 +90,10 @@ lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT} .PHONY
 	shellcheck --shell=sh ${GOAT_SCRIPT}
 	checkbashisms -npfx ${GOAT_SCRIPT}
 
+.PHONY: test
 test: Kyuafile test.sh
 	env -i kyua test || env -i kyua report --verbose
 
-clean: .PHONY
+.PHONY: clean
+clean:
 	@-rm -f -- goat goat.1
