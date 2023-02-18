@@ -76,7 +76,7 @@ install: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 	@echo "========================================================"
 	@echo "Now in order to finish setting up goat add:"
 	@echo ""
-	@echo "    . \"${DESTSHAREDIR}/libgoat.sh\""
+	@echo "    . \"\$$(goat libexec)\""
 	@echo ""
 	@echo "to your shell initialization file (e.g., \"~/.bashrc\")."
 	@echo ""
