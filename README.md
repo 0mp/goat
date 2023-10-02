@@ -39,6 +39,12 @@ With goat you can easily manage your ninja shortcuts - just type `goat p
 
 BTW, Bash completion is now fully working with goat's shortcuts.
 
+## Building
+
+```console
+$ make all
+```
+
 ## Installation
 
 ```console
