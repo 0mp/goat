@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 #
-# Copyright 2018, 2019 Mateusz Piotrowski <0mp@FreeBSD.org>
+# Copyright 2018-2026 Mateusz Piotrowski <0mp@FreeBSD.org>
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -26,9 +26,11 @@
 
 DESTDIR?=
 PREFIX?=	${HOME}/.local
-VERSION!=	if [ -z "$$VERSION" ]; then \
-			git describe --tags; \
-		fi
+# XXX: Support older GNU make implementations.
+_GIT_VERSION=	git describe --tags
+GIT_VERSION=	$(shell ${_GIT_VERSION})
+GIT_VERSION!=	${_GIT_VERSION}
+VERSION?=	${GIT_VERSION}
 
 BASHCOMPDIR=		${PREFIX}/share/bash-completion
 BINDIR=			${PREFIX}/bin
