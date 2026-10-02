@@ -75,15 +75,6 @@ install: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 	@mkdir -p ${DESTBASHCOMPDIR}
 	install -m 0444 ${GOAT_BASH_COMPLETION} ${DESTBASHCOMPDIR}
 
-	@echo "========================================================"
-	@echo "Now in order to finish setting up goat add:"
-	@echo ""
-	@echo "    . \"\$$(goat libexec)\""
-	@echo ""
-	@echo "to your shell initialization file (e.g., \"~/.bashrc\")."
-	@echo ""
-	@echo "Goat is going to be available the next time you start your shell."
-
 .PHONY: lint
 lint: ${GOAT_MANPAGE} ${GOAT_SCRIPT}
 	shellcheck --shell=bash ${GOAT_BASH_COMPLETION}

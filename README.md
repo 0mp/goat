@@ -51,34 +51,43 @@ $ make all
 $ make install
 ```
 
-Aferwards:
+Aferwards, add libgoat sourcing to your shell's initialization file
+(e.g., `~/.bashrc`):
 
-- Make sure that `~/.local/bin` is in your `PATH`, e.g.:
+``` console
+$ echo '. "$(goat libexec)"' >> ~/.bashrc
+```
 
-  ```console
-  $ cat <<'EOF' >> ~/.bashrc
-  case "$PATH" in
-      *$HOME/.local/bin*) ;;
-      *) PATH="$HOME/.local/bin:$PATH" ;;
-  esac
-  EOF
-  ```
+Goat is going to be available the next time you start your shell.
 
-- In a non-XDG environment or if `bash-completion` version is 2.8 or lower,
-  make sure that files inside `~/.local/share/bash_completion/completions` are actually
-  sourced by the Bash completion library, e.g.,
+### Installation troubleshooting
 
-  ```console
-  $ cat <<'EOF' >> ~/.bash_completion
-  if [[ -d ~/.local/share/bash_completion/completions ]]
-  then
-      for f in ~/.local/share/bash_completion/completions/*
-      do
-          [[ -f $f ]] && source "$f"
-      done
-  fi
-  EOF
-  ```
+Make sure that `~/.local/bin` is in your `PATH`, e.g.:
+
+```console
+$ cat <<'EOF' >> ~/.bashrc
+case "$PATH" in
+    *$HOME/.local/bin*) ;;
+    *) PATH="$HOME/.local/bin:$PATH" ;;
+esac
+EOF
+```
+
+In a non-XDG environment or if `bash-completion` version is 2.8 or lower,
+make sure that files inside `~/.local/share/bash_completion/completions` are actually
+sourced by the Bash completion library, e.g.,
+
+```console
+$ cat <<'EOF' >> ~/.bash_completion
+if [[ -d ~/.local/share/bash_completion/completions ]]
+then
+    for f in ~/.local/share/bash_completion/completions/*
+    do
+        [[ -f $f ]] && source "$f"
+    done
+fi
+EOF
+```
 
 ## Usage overview
 
