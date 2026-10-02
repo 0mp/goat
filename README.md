@@ -65,14 +65,14 @@ Aferwards:
   ```
 
 - In a non-XDG environment or if `bash-completion` version is 2.8 or lower,
-  make sure that files inside `~/.local/share/bash_completion.d` are actually
+  make sure that files inside `~/.local/share/bash_completion/completions` are actually
   sourced by the Bash completion library, e.g.,
 
   ```console
   $ cat <<'EOF' >> ~/.bash_completion
-  if [[ -d ~/.bash_completion.d ]]
+  if [[ -d ~/.local/share/bash_completion/completions ]]
   then
-      for f in ~/.local/share/bash_completion.d/*
+      for f in ~/.local/share/bash_completion/completions/*
       do
           [[ -f $f ]] && source "$f"
       done
