@@ -53,7 +53,7 @@ $ make install
 
 Aferwards:
 
-- Make sure that `~/.local/bin` is in your `PATH`:
+- Make sure that `~/.local/bin` is in your `PATH`, e.g.:
 
   ```console
   $ cat <<'EOF' >> ~/.bashrc
@@ -64,14 +64,15 @@ Aferwards:
   EOF
   ```
 
-- Make sure that files inside `~/.local/etc/bash_completion.d` are actually
-  sourced by the Bash completion library:
+- In a non-XDG environment or if `bash-completion` version is 2.8 or lower,
+  make sure that files inside `~/.local/share/bash_completion.d` are actually
+  sourced by the Bash completion library, e.g.,
 
   ```console
   $ cat <<'EOF' >> ~/.bash_completion
   if [[ -d ~/.bash_completion.d ]]
   then
-      for f in ~/.local/etc/bash_completion.d/*
+      for f in ~/.local/share/bash_completion.d/*
       do
           [[ -f $f ]] && source "$f"
       done

@@ -32,7 +32,7 @@ GIT_VERSION=	$(shell ${_GIT_VERSION})
 GIT_VERSION!=	${_GIT_VERSION}
 VERSION?=	${GIT_VERSION}
 
-BASHCOMPDIR=		${PREFIX}/share/bash-completion
+BASHCOMPDIR=		${PREFIX}/share/bash-completion.d
 BINDIR=			${PREFIX}/bin
 SHAREDIR=		${PREFIX}/share/goat
 MANDIR=			${PREFIX}/share/man/man1
